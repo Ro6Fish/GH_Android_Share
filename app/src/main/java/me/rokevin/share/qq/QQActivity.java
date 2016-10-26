@@ -1,8 +1,7 @@
-package me.rokevin.qq;
+package me.rokevin.share.qq;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -17,9 +16,12 @@ import com.tencent.tauth.UiError;
 
 import java.util.ArrayList;
 
-public class MainActivity extends AppCompatActivity {
+import me.rokevin.share.BaseActivity;
+import me.rokevin.share.R;
 
-    private String TAG = MainActivity.class.getSimpleName();
+public class QQActivity extends BaseActivity {
+
+    private String TAG = QQActivity.class.getSimpleName();
 
     private Button btnShare;
     private Button btnLogin;
@@ -30,7 +32,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_qq);
 
         mTencent = Tencent.createInstance("tencent1105515096", this.getApplicationContext());
 
@@ -55,7 +57,7 @@ public class MainActivity extends AppCompatActivity {
                 Log.e(TAG, "openId:" + openId);
                 Log.e(TAG, "accessToken:" + accessToken);
 
-                mTencent.login(MainActivity.this, "get_user_info", mBaseUiListener);
+                mTencent.login(QQActivity.this, "get_user_info", mBaseUiListener);
             }
         });
     }
@@ -87,7 +89,7 @@ public class MainActivity extends AppCompatActivity {
         bundle.putString(QzoneShare.SHARE_TO_QQ_TITLE, "标题");//必填
         bundle.putString(QzoneShare.SHARE_TO_QQ_SUMMARY, "摘要");//选填 params.putString(QzoneShare.SHARE_TO_QQ_TARGET_URL, "跳转 URL");//必填
         bundle.putStringArrayList(QzoneShare.SHARE_TO_QQ_IMAGE_URL, new ArrayList<String>());
-        mTencent.shareToQzone(MainActivity.this, bundle, mBaseUiListener);
+        mTencent.shareToQzone(QQActivity.this, bundle, mBaseUiListener);
     }
 
     @Override

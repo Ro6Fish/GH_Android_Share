@@ -27,4 +27,5 @@ dependencies {
     compile project(':douban')
     compile project(':sina')
     compile project(':weixin')
+    compile 'com.jakewharton:butterknife:8.4.0'
 }

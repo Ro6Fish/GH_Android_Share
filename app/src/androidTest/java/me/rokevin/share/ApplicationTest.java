@@ -1,4 +1,4 @@
-package me.rokevin.qq;
+package me.rokevin.share;
 
 import android.app.Application;
 import android.test.ApplicationTestCase;

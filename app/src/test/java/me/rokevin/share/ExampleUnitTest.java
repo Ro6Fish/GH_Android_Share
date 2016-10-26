@@ -1,4 +1,4 @@
-package me.rokevin.qq;
+package me.rokevin.share;
 
 import org.junit.Test;
 

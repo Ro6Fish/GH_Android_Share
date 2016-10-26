@@ -6,34 +6,26 @@
     android:padding="16dp">
 
     <Button
-        android:id="@+id/btn_qq"
+        android:id="@+id/btn_share"
         android:layout_width="match_parent"
         android:layout_height="48dp"
+        android:layout_marginRight="24dp"
+        android:layout_weight="1"
         android:gravity="center"
-        android:text="QQ" />
+        android:text="分享" />
 
     <Button
-        android:id="@+id/btn_weixin"
+        android:id="@+id/btn_login"
         android:layout_width="0dp"
         android:layout_height="48dp"
         android:layout_weight="1"
         android:gravity="center"
-        android:text="微信" />
+        android:text="登录" />
 
-    <Button
-        android:id="@+id/btn_sina"
-        android:layout_width="0dp"
-        android:layout_height="48dp"
-        android:layout_weight="1"
-        android:gravity="center"
-        android:text="新浪" />
-
-    <Button
-        android:id="@+id/btn_douban"
-        android:layout_width="0dp"
-        android:layout_height="48dp"
-        android:layout_weight="1"
-        android:gravity="center"
-        android:text="豆瓣" />
+    <TextView
+        android:id="@+id/tv_info"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="24dp" />
 
 </LinearLayout>
