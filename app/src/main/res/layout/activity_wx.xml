@@ -9,8 +9,6 @@
         android:id="@+id/btn_share"
         android:layout_width="match_parent"
         android:layout_height="48dp"
-        android:layout_marginRight="24dp"
-        android:layout_weight="1"
         android:gravity="center"
         android:text="分享微信好友" />
 
@@ -18,24 +16,20 @@
         android:id="@+id/btn_share_circle"
         android:layout_width="match_parent"
         android:layout_height="48dp"
-        android:layout_marginRight="24dp"
-        android:layout_weight="1"
         android:gravity="center"
         android:text="分享朋友圈" />
 
     <Button
         android:id="@+id/btn_login"
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="48dp"
-        android:layout_weight="1"
         android:gravity="center"
         android:text="登录" />
 
     <Button
         android:id="@+id/btn_get_user_info"
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="48dp"
-        android:layout_weight="1"
         android:gravity="center"
         android:text="获取用户信息" />
 

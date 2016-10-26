@@ -14,25 +14,22 @@
 
     <Button
         android:id="@+id/btn_weixin"
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="48dp"
-        android:layout_weight="1"
         android:gravity="center"
         android:text="微信" />
 
     <Button
         android:id="@+id/btn_sina"
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="48dp"
-        android:layout_weight="1"
         android:gravity="center"
         android:text="新浪" />
 
     <Button
         android:id="@+id/btn_douban"
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="48dp"
-        android:layout_weight="1"
         android:gravity="center"
         android:text="豆瓣" />
 
