@@ -1,1 +1,1 @@
-include ':app', ':qq'
+include ':app', ':qq', ':weixin', ':sina', ':douban'
