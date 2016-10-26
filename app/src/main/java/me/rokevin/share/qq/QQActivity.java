@@ -8,6 +8,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.tencent.connect.common.Constants;
+import com.tencent.connect.share.QQShare;
 import com.tencent.connect.share.QzoneShare;
 import com.tencent.open.SocialConstants;
 import com.tencent.tauth.IUiListener;
@@ -34,7 +35,7 @@ public class QQActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_qq);
 
-        mTencent = Tencent.createInstance("tencent1105515096", this.getApplicationContext());
+        mTencent = Tencent.createInstance("1105515096", this.getApplicationContext());
 
         btnShare = (Button) findViewById(R.id.btn_share);
         btnLogin = (Button) findViewById(R.id.btn_login);
@@ -60,23 +61,28 @@ public class QQActivity extends BaseActivity {
                 mTencent.login(QQActivity.this, "get_user_info", mBaseUiListener);
             }
         });
+
+        mBaseUiListener = new BaseUiListener();
     }
 
     public void shareToQQ() {
 
         Bundle bundle = new Bundle();
         //这条分享消息被好友点击后的跳转URL。
-        bundle.putString(SocialConstants.PARAM_TARGET_URL, "http://connect.qq.com/");
-        //分享的标题。注：PARAM_TITLE、PARAM_IMAGE_URL、PARAM_	SUMMARY不能全为空，最少必须有一个是有值的。
-        bundle.putString(SocialConstants.PARAM_TITLE, "我在测试");
+        bundle.putInt(QQShare.SHARE_TO_QQ_KEY_TYPE, QQShare.SHARE_TO_QQ_TYPE_AUDIO);
+        bundle.putString(QQShare.SHARE_TO_QQ_TARGET_URL, "http://www.5ijoke.com");
+        //分享的标题。注：PARAM_TITLE、PARAM_IMAGE_URL、PARAM_	SUMMARY不能全为空，最你少必须有一个是有值的。
+        bundle.putString(QQShare.SHARE_TO_QQ_TITLE, "给你来个笑话");
+        bundle.putString(QQShare.SHARE_TO_QQ_AUDIO_URL, "http://112.74.78.105:8080/HelloWorld/download/voice2.amr");
+
         //分享的图片URL
-        bundle.putString(SocialConstants.PARAM_IMAGE_URL, "http://img3.cache.netease.com/photo/0005/2013-03-07/8PBKS8G400BV0005.jpg");
+        bundle.putString(QQShare.SHARE_TO_QQ_IMAGE_URL, "http://img3.cache.netease.com/photo/0005/2013-03-07/8PBKS8G400BV0005.jpg");
         //分享的消息摘要，最长50个字
-        bundle.putString(SocialConstants.PARAM_SUMMARY, "测试");
+        bundle.putString(QQShare.SHARE_TO_QQ_SUMMARY, "苏清上山打老虎");
         //手Q客户端顶部，替换“返回”按钮文字，如果为空，用返回代替
-        bundle.putString(SocialConstants.PARAM_APPNAME, "??我在测试");
+        bundle.putString(QQShare.SHARE_TO_QQ_APP_NAME, "就是笑话");
         //标识该消息的来源应用，值为应用名称+AppId。
-        bundle.putString(SocialConstants.PARAM_APP_SOURCE, "星期几" + "");
+        bundle.putString(SocialConstants.PARAM_APP_SOURCE, "就是笑话" + "1105515096");
 
         mTencent.shareToQQ(this, bundle, mBaseUiListener);
     }
@@ -101,7 +107,7 @@ public class QQActivity extends BaseActivity {
             }
 
             if (mTencent != null) {
-                // mTencent.onActivityResultData(requestCode, resultCode, data, mBaseUiListener);
+                mTencent.onActivityResult(requestCode, resultCode, data);
             }
         }
     }

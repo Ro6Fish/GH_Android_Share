@@ -2,8 +2,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="me.rokevin.share">
 
-    <data android:scheme="tencent1105515096" />
-
     <application
         android:name=".App"
         android:allowBackup="true"
@@ -36,6 +34,7 @@
             android:name="me.rokevin.share.douban.DouBanActivity"
             android:screenOrientation="portrait" />
 
+        <!--QQ-->
         <activity
             android:name="com.tencent.tauth.AuthActivity"
             android:launchMode="singleTask"
