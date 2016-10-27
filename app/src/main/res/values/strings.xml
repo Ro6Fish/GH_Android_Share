@@ -1,3 +1,21 @@
 <resources>
     <string name="app_name">就是笑话</string>
+
+    <string name="weibosdk_demo_share_text_template">我正在使用微博客户端发博器分享文字</string>
+    <string name="weibosdk_demo_share_webpage_template">【%1$s】（分享自 WeiboSDKDemo %2$s）</string>
+    <string name="weibosdk_demo_share_music_template">我正在听 %1$s（分享自 WeiboSDKDemo %2$s）</string>
+    <string name="weibosdk_demo_share_video_template">我正在看 %1$s（分享自 WeiboSDKDemo %2$s）</string>
+    <string name="weibosdk_demo_share_voice_template">我分享了 %1$s（分享自 WeiboSDKDemo %2$s）</string>
+    <string name="weibosdk_demo_share_webpage_demo">XXX 新闻</string>
+    <string name="weibosdk_demo_share_music_demo">XXX 音乐</string>
+    <string name="weibosdk_demo_share_video_demo">XXX 视频</string>
+    <string name="weibosdk_demo_share_voice_demo">XXX 声音</string>
+
+    <!-- 分享成功失败的 Toast -->
+    <string name="weibosdk_demo_toast_share_success">分享成功</string>
+    <string name="weibosdk_demo_toast_share_failed">分享失败</string>
+    <string name="weibosdk_demo_toast_share_canceled">取消分享</string>
+    <string name="weibosdk_demo_toast_share_response_args_success">收到微博发起的请求成功</string>
+    <string name="weibosdk_demo_toast_share_response_args_failed">收到客户端请求消息失败</string>
+
 </resources>

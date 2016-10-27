@@ -1,11 +1,19 @@
 apply plugin: 'com.android.application'
 
 android {
+    signingConfigs {
+        joke {
+            keyAlias 'joke'
+            keyPassword 'joke123'
+            storeFile file('/Users/luokaiwen/joke.jks')
+            storePassword 'joke123'
+        }
+    }
     compileSdkVersion 24
     buildToolsVersion "24.0.0"
-
     defaultConfig {
-        applicationId "me.rokevin.qq"
+        // applicationId "me.rokevin.share"
+        applicationId "com.bitch4.joke"
         minSdkVersion 14
         targetSdkVersion 24
         versionCode 1
@@ -15,6 +23,10 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.joke
+        }
+        debug {
+            signingConfig signingConfigs.joke
         }
     }
 }
@@ -27,5 +39,4 @@ dependencies {
     compile project(':douban')
     compile project(':sina')
     compile project(':weixin')
-    compile 'com.jakewharton:butterknife:8.4.0'
 }

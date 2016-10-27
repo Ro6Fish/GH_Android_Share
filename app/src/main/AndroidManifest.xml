@@ -27,10 +27,6 @@
             android:screenOrientation="portrait" />
 
         <activity
-            android:name="me.rokevin.share.sina.SinaActivity"
-            android:screenOrientation="portrait" />
-
-        <activity
             android:name="me.rokevin.share.douban.DouBanActivity"
             android:screenOrientation="portrait" />
 
@@ -61,6 +57,17 @@
             android:exported="true"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+
+        <!--sina微博-->
+        <activity
+            android:name="me.rokevin.share.sina.SinaActivity"
+            android:configChanges="keyboardHidden|orientation"
+            android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="com.sina.weibo.sdk.action.ACTION_SDK_REQ_ACTIVITY" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
 
     </application>
 

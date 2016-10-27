@@ -21,10 +21,10 @@ android {
     }
     sourceSets {
 
-        main {
-
-            jniLibs.srcDirs = ['libs']
-        }
+//        main {
+//
+//            jniLibs.srcDirs = ['libs']
+//        }
     }
 }
 
@@ -34,4 +34,5 @@ dependencies {
     testCompile 'junit:junit:4.12'
     compile files('libs/pinyin4j-2.5.0.jar')
     compile 'com.daimajia.numberprogressbar:library:1.2@aar'
+    compile files('libs/weiboSDKCore_3.1.4.jar')
 }
