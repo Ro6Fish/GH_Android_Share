@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package me.rokevin.share.sina;
+package me.rokevin.android.lib.sharesdk.sina;
 
 /**
  * 该类定义了微博授权时所需要的参数。

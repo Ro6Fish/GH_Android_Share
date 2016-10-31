@@ -1,1 +1,1 @@
-include ':app', ':qq', ':weixin', ':sina', ':douban'
+include ':app', ':sharesdk'

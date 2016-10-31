@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- 重写系统弹出Dialog -->
+    <style name="DialogTheme" parent="@android:style/Theme.Dialog">
+
+        <!--边框-->
+        <item name="android:windowFrame">@null</item>
+        <!--是否浮现在activity之上 如果为false Dialog整体透明-->
+        <item name="android:windowIsFloating">false</item>
+        <!--有的机器不设置此项,会有titleBar-->
+        <item name="android:windowFullscreen">true</item>
+        <!--半透明-->
+        <item name="android:windowIsTranslucent">true</item>
+        <!-- 除去title -->
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <!-- 模糊 配合 windowIsFloating 此项如果为true 则不显示透明效果 如果此项为false 则显示透明效果-->
+        <item name="android:backgroundDimEnabled">true</item>
+        <!-- 除去对话框黑色背景色 -->
+        <item name="android:windowBackground">@android:color/transparent</item>
+
+    </style>
+    
+</resources>

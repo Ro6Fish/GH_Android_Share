@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package me.rokevin.share.sina.api;
+package me.rokevin.android.lib.sharesdk.sina.api;
 
 import android.content.Context;
 import android.text.TextUtils;

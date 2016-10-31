@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package me.rokevin.share.sina.models;
+package me.rokevin.android.lib.sharesdk.sina.models;
 
 import org.json.JSONException;
 import org.json.JSONObject;
