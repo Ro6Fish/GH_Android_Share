@@ -8,12 +8,19 @@ android {
             storeFile file('/Users/luokaiwen/joke.jks')
             storePassword 'joke123'
         }
+//        joke {
+//            keyAlias 'dingdangdao'
+//            keyPassword 'hlvan123'
+//            storeFile file('/Users/luokaiwen/dingdangdao.jks')
+//            storePassword 'hlvan123'
+//        }
     }
     compileSdkVersion 24
     buildToolsVersion "24.0.0"
     defaultConfig {
         // applicationId "me.rokevin.share"
-        applicationId "com.bitch4.joke"
+        // applicationId "com.bitch4.joke"
+        applicationId "com.hlvan.ddd.consigner"
         minSdkVersion 14
         targetSdkVersion 24
         versionCode 1

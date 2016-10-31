@@ -41,6 +41,8 @@
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
 
+                <!--发货端-->
+                <!--<data android:scheme="tencent1105547051" />-->
                 <data android:scheme="tencent1105515096" />
             </intent-filter>
         </activity>
