@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">sharesdk</string>
+    <string name="exception_appkey_null">为空</string>
+    <string name="share_succ">分享成功</string>
 </resources>

@@ -39,12 +39,15 @@ import org.json.JSONObject;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
+import me.rokevin.android.lib.sharesdk.businees.sina.AccessTokenKeeper;
+import me.rokevin.android.lib.sharesdk.businees.sina.Constants;
+import me.rokevin.android.lib.sharesdk.businees.sina.api.LogoutAPI;
+import me.rokevin.android.lib.sharesdk.businees.sina.api.UsersAPI;
+import me.rokevin.android.lib.sharesdk.businees.sina.models.ErrorInfo;
+import me.rokevin.android.lib.sharesdk.businees.sina.models.User;
 import me.rokevin.share.BaseActivity;
 import me.rokevin.share.R;
-import me.rokevin.share.sina.api.LogoutAPI;
-import me.rokevin.share.sina.api.UsersAPI;
-import me.rokevin.share.sina.models.ErrorInfo;
-import me.rokevin.share.sina.models.User;
+import me.rokevin.share.ShareConfig;
 
 public class SinaActivity extends BaseActivity implements IWeiboHandler.Response {
 
@@ -90,17 +93,17 @@ public class SinaActivity extends BaseActivity implements IWeiboHandler.Response
         tvToken = (TextView) findViewById(R.id.tv_token);
         tvInfo = (TextView) findViewById(R.id.tv_info);
 
-        mWeiboShareAPI = WeiboShareSDK.createWeiboAPI(this, Constants.APP_KEY);
+        mWeiboShareAPI = WeiboShareSDK.createWeiboAPI(this, ShareConfig.SINA_APP_KEY);
         mWeiboShareAPI.registerApp(); // 将应用注册到微博客户端
 
         // 创建授权认证信息
-        mAuthInfo = new AuthInfo(this, Constants.APP_KEY, Constants.REDIRECT_URL, Constants.SCOPE);
+        mAuthInfo = new AuthInfo(this, ShareConfig.SINA_APP_KEY, Constants.REDIRECT_URL, Constants.SCOPE);
 
         // 获取本地存储的AccessToken如果没有则要登录下
         mAccessToken = AccessTokenKeeper.readAccessToken(SinaActivity.this);
 
         // 获取用户信息接口
-        mUsersAPI = new UsersAPI(this, Constants.APP_KEY, mAccessToken);
+        mUsersAPI = new UsersAPI(this, ShareConfig.SINA_APP_KEY, mAccessToken);
 
         findViewById(R.id.btn_share).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -137,7 +140,7 @@ public class SinaActivity extends BaseActivity implements IWeiboHandler.Response
                 /**
                  * 注销按钮：该按钮未做任何封装，直接调用对应 API 接口
                  */
-                new LogoutAPI(SinaActivity.this, Constants.APP_KEY, AccessTokenKeeper.readAccessToken(SinaActivity.this)).logout(mLogoutListener);
+                new LogoutAPI(SinaActivity.this, ShareConfig.SINA_APP_KEY, AccessTokenKeeper.readAccessToken(SinaActivity.this)).logout(mLogoutListener);
             }
         });
 
@@ -492,7 +495,7 @@ public class SinaActivity extends BaseActivity implements IWeiboHandler.Response
     private void refreshTokenRequest() {
         Oauth2AccessToken token = AccessTokenKeeper.readAccessToken(mContext);
         RefreshTokenApi.create(getApplicationContext()).refreshToken(
-                Constants.APP_KEY, token.getRefreshToken(), new RequestListener() {
+                ShareConfig.SINA_APP_KEY, token.getRefreshToken(), new RequestListener() {
 
                     @Override
                     public void onWeiboException(WeiboException arg0) {

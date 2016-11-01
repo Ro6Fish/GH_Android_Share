@@ -24,14 +24,16 @@
         android:layout_width="match_parent"
         android:layout_height="48dp"
         android:gravity="center"
-        android:text="登录" />
+        android:text="登录"
+        android:visibility="gone" />
 
     <Button
         android:id="@+id/btn_get_user_info"
         android:layout_width="match_parent"
         android:layout_height="48dp"
         android:gravity="center"
-        android:text="获取用户信息" />
+        android:text="获取用户信息"
+        android:visibility="gone" />
 
     <TextView
         android:id="@+id/tv_info"

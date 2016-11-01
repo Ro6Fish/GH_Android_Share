@@ -10,7 +10,8 @@ import com.tencent.mm.sdk.openapi.IWXAPIEventHandler;
 import com.tencent.mm.sdk.openapi.WXAPIFactory;
 
 import me.rokevin.share.BaseActivity;
-import me.rokevin.share.util.LogUtil;
+import me.rokevin.share.ShareConfig;
+import me.rokevin.android.lib.sharesdk.util.LogUtil;
 
 public class WXEntryActivity extends BaseActivity implements IWXAPIEventHandler {
 
@@ -18,7 +19,7 @@ public class WXEntryActivity extends BaseActivity implements IWXAPIEventHandler 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        IWXAPI api = WXAPIFactory.createWXAPI(this, "wxd2a8c61e599d0750", true);
+        IWXAPI api = WXAPIFactory.createWXAPI(this, ShareConfig.WX_APP_ID, true);
         api.handleIntent(getIntent(), this);
 
         LogUtil.e(WXEntryActivity.class, "进入微信回调页面");

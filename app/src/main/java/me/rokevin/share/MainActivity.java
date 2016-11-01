@@ -7,7 +7,7 @@ import android.view.View;
 import me.rokevin.share.douban.DouBanActivity;
 import me.rokevin.share.qq.QQActivity;
 import me.rokevin.share.sina.SinaActivity;
-import me.rokevin.share.util.LogUtil;
+import me.rokevin.android.lib.sharesdk.util.LogUtil;
 import me.rokevin.share.weixin.WXActivity;
 
 public class MainActivity extends BaseActivity {

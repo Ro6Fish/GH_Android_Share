@@ -17,10 +17,16 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    lintOptions {
+        checkReleaseBuilds false
+        abortOnError false
+    }
 }
 
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     compile files('libs/libammsdk.jar')
     compile files('libs/weiboSDKCore_3.1.4.jar')
+    compile files('libs/open_sdk_r5756.jar')
+    compile 'com.android.support:appcompat-v7:22.0.0'
 }
