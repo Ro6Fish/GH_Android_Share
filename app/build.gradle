@@ -19,8 +19,8 @@ android {
     buildToolsVersion "22.0.1"
     defaultConfig {
         // applicationId "me.rokevin.share"
-        // applicationId "com.bitch4.joke"
-        applicationId "com.hlvan.ddd.consigner"
+        applicationId "com.bitch4.joke"
+        // applicationId "com.hlvan.ddd.consigner"
         minSdkVersion 14
         targetSdkVersion 22
         versionCode 1

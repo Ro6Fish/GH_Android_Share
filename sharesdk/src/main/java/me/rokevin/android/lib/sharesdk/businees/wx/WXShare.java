@@ -12,7 +12,7 @@ import com.tencent.mm.sdk.platformtools.Util;
 
 /**
  * Created by luokaiwen on 16/10/31.
- * <p>
+ * <p/>
  * https://open.weixin.qq.com/cgi-bin/showdocument?action=dir_list&t=resource/res_list&verify=1&id=open1419317340&token=22ce97a5e39f843c314486e106067b4f26a44ca9&lang=zh_CN
  */
 public class WXShare {
@@ -54,7 +54,7 @@ public class WXShare {
         if (mIwxapi == null || mContext == null) {
             return;
         }
-        
+
         WXMusicObject music = new WXMusicObject();
         music.musicUrl = musicUrl;
 

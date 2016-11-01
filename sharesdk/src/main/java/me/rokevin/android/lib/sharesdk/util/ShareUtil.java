@@ -49,9 +49,6 @@ public class ShareUtil {
 
     private static Context mContext;
 
-    // 1:微信 2:QQ 3:新浪 4:豆瓣
-    private String mType;
-
     private static WXShare mWXShare;
     private static WXLogin mWXLogin;
 
@@ -60,8 +57,6 @@ public class ShareUtil {
 
     private static SinaShare mSinaShare;
     private static SinaLogin mSinaLogin;
-    private static String QQOpenId;
-    private static String QQAccessToken;
 
     /**
      * 注册WX APP_ID
@@ -287,7 +282,6 @@ public class ShareUtil {
     //================================QQ===============================//
 
     //================================Sina=============================//
-
 
 
     //================================Sina=============================//
