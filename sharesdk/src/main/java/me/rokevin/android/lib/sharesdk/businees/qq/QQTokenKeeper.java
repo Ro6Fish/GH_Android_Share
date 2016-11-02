@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package me.rokevin.android.lib.sharesdk.businees.sina;
+package me.rokevin.android.lib.sharesdk.businees.qq;
 
 import android.content.Context;
 import android.content.SharedPreferences;

@@ -16,7 +16,6 @@ import com.tencent.tauth.UiError;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import me.rokevin.android.lib.sharesdk.businees.sina.QQTokenKeeper;
 import me.rokevin.android.lib.sharesdk.util.LogUtil;
 
 /**

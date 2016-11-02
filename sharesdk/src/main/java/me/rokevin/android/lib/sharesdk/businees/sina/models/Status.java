@@ -93,7 +93,7 @@ public class Status {
     /**
      * 微博作者的用户信息字段
      */
-    public User user;
+    public SinaUser user;
     /**
      * 被转发的原微博信息字段，当该微博为转发微博时返回
      */
@@ -164,7 +164,7 @@ public class Status {
         status.bmiddle_pic = jsonObject.optString("bmiddle_pic");
         status.original_pic = jsonObject.optString("original_pic");
         status.geo = Geo.parse(jsonObject.optJSONObject("geo"));
-        status.user = User.parse(jsonObject.optJSONObject("user"));
+        status.user = SinaUser.parse(jsonObject.optJSONObject("user"));
         status.retweeted_status = Status.parse(jsonObject.optJSONObject("retweeted_status"));
         status.reposts_count = jsonObject.optInt("reposts_count");
         status.comments_count = jsonObject.optInt("comments_count");

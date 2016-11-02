@@ -25,7 +25,7 @@ import org.json.JSONObject;
  * @author SINA
  * @since 2013-11-24
  */
-public class User {
+public class SinaUser {
 
     /**
      * 用户UID（int64）
@@ -172,10 +172,10 @@ public class User {
     public String mbrank;
     public String block_word;
 
-    public static User parse(String jsonString) {
+    public static SinaUser parse(String jsonString) {
         try {
             JSONObject jsonObject = new JSONObject(jsonString);
-            return User.parse(jsonObject);
+            return SinaUser.parse(jsonObject);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -183,12 +183,12 @@ public class User {
         return null;
     }
 
-    public static User parse(JSONObject jsonObject) {
+    public static SinaUser parse(JSONObject jsonObject) {
         if (null == jsonObject) {
             return null;
         }
 
-        User user = new User();
+        SinaUser user = new SinaUser();
         user.id = jsonObject.optString("id", "");
         user.idstr = jsonObject.optString("idstr", "");
         user.screen_name = jsonObject.optString("screen_name", "");

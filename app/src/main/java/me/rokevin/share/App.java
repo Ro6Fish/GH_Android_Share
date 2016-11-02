@@ -15,6 +15,5 @@ public class App extends Application {
         
         ShareUtil.registeWX(getApplicationContext(), ShareConfig.WX_APP_ID);
         ShareUtil.registeQQ(getApplicationContext(), ShareConfig.QQ_OPEN_ID);
-        ShareUtil.registeSina(getApplicationContext(), ShareConfig.SINA_APP_KEY);
     }
 }

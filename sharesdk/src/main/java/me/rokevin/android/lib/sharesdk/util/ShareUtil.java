@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.text.TextUtils;
 
+import com.sina.weibo.sdk.api.share.IWeiboHandler;
 import com.sina.weibo.sdk.api.share.IWeiboShareAPI;
 import com.sina.weibo.sdk.api.share.WeiboShareSDK;
 import com.sina.weibo.sdk.utils.LogUtil;
@@ -18,7 +19,7 @@ import me.rokevin.android.lib.sharesdk.R;
 import me.rokevin.android.lib.sharesdk.businees.qq.QQLogin;
 import me.rokevin.android.lib.sharesdk.businees.qq.QQShare;
 import me.rokevin.android.lib.sharesdk.businees.qq.QQToken;
-import me.rokevin.android.lib.sharesdk.businees.sina.QQTokenKeeper;
+import me.rokevin.android.lib.sharesdk.businees.qq.QQTokenKeeper;
 import me.rokevin.android.lib.sharesdk.businees.sina.SinaLogin;
 import me.rokevin.android.lib.sharesdk.businees.sina.SinaShare;
 import me.rokevin.android.lib.sharesdk.businees.wx.WXLogin;
@@ -57,6 +58,7 @@ public class ShareUtil {
 
     private static SinaShare mSinaShare;
     private static SinaLogin mSinaLogin;
+
 
     /**
      * 注册WX APP_ID
@@ -155,8 +157,10 @@ public class ShareUtil {
         }
 
         mWeiboShareAPI = WeiboShareSDK.createWeiboAPI(context, SINA_APP_KEY);
-
         mWeiboShareAPI.registerApp(); // 将应用注册到微博客户端
+
+        mSinaShare = new SinaShare(mContext, mWeiboShareAPI);
+        mSinaLogin = new SinaLogin(mContext, mWeiboShareAPI, SINA_APP_KEY);
     }
 
     //===============================微信===============================//
@@ -277,12 +281,46 @@ public class ShareUtil {
 
             }
         });
+
+        mSinaLogin.onActivityResultData(requestCode, resultCode, data);
     }
 
     //================================QQ===============================//
 
     //================================Sina=============================//
 
+    public static void shareToSina(Activity activity, String title, String description, String musicUrl, int duration, String webUrl, String defaultText, int imageId) {
+
+        mSinaShare.sendSingleMessage(activity, title, description, musicUrl, duration, webUrl, defaultText, imageId);
+    }
+
+    public static void loginSina(Activity activity) {
+
+        mSinaLogin.login(activity);
+    }
+
+    public static void logoutSina() {
+
+        mSinaLogin.logout();
+    }
+
+    public static void getUserInfoSina() {
+
+        mSinaLogin.getUserInfo();
+    }
+
+    public static void onNewIntent(Intent intent, IWeiboHandler.Response response) {
+
+        // 从当前应用唤起微博并进行分享后，返回到当前应用时，需要在此处调用该函数
+        // 来接收微博客户端返回的数据；执行成功，返回 true，并调用
+        // {@link IWeiboHandler.Response#onResponse}；失败返回 false，不调用上述回调
+        mWeiboShareAPI.handleWeiboResponse(intent, response);
+    }
+
+    public static void refreshToken() {
+
+        mSinaLogin.refreshTokenRequest(SINA_APP_KEY);
+    }
 
     //================================Sina=============================//
 }
