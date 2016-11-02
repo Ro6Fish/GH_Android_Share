@@ -97,7 +97,7 @@ bintray {
     configurations = ['archives']
     pkg {
         repo = "maven"
-        name = "kedaxunfei"    //发布到JCenter上的项目名字
+        name = "android_share_sdk"    //发布到JCenter上的项目名字
         websiteUrl = siteUrl
         vcsUrl = gitUrl
         licenses = ["Apache-2.0"]
