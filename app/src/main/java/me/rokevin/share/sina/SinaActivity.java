@@ -31,8 +31,6 @@ public class SinaActivity extends BaseActivity implements IWeiboHandler.Response
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sina);
 
-        ShareUtil.registeSina(SinaActivity.this, ShareConfig.SINA_APP_KEY);
-
         tvToken = (TextView) findViewById(R.id.tv_token);
         tvInfo = (TextView) findViewById(R.id.tv_info);
 
