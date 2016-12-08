@@ -5,9 +5,11 @@ import android.os.Bundle;
 import android.view.View;
 
 import me.rokevin.share.douban.DouBanActivity;
+import me.rokevin.share.other.EmailActivity;
 import me.rokevin.share.qq.QQActivity;
 import me.rokevin.share.sina.SinaActivity;
 import me.rokevin.android.lib.sharesdk.util.LogUtil;
+import me.rokevin.share.other.SMSActivity;
 import me.rokevin.share.weixin.WXActivity;
 
 public class MainActivity extends BaseActivity {
@@ -43,6 +45,20 @@ public class MainActivity extends BaseActivity {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(mContext, DouBanActivity.class));
+            }
+        });
+
+        findViewById(R.id.btn_sms).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(mContext, SMSActivity.class));
+            }
+        });
+
+        findViewById(R.id.btn_email).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(mContext, EmailActivity.class));
             }
         });
     }

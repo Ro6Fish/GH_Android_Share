@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">就是笑话</string>
+    <string name="app_name">分享SDK</string>
 
     <string name="weibosdk_demo_share_text_template">我正在使用微博客户端发博器分享文字</string>
     <string name="weibosdk_demo_share_webpage_template">【%1$s】（分享自 WeiboSDKDemo %2$s）</string>

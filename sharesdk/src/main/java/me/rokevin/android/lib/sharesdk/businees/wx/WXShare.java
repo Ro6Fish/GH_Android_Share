@@ -8,6 +8,7 @@ import com.tencent.mm.sdk.openapi.IWXAPI;
 import com.tencent.mm.sdk.openapi.SendMessageToWX;
 import com.tencent.mm.sdk.openapi.WXMediaMessage;
 import com.tencent.mm.sdk.openapi.WXMusicObject;
+import com.tencent.mm.sdk.openapi.WXWebpageObject;
 import com.tencent.mm.sdk.platformtools.Util;
 
 /**
@@ -49,6 +50,26 @@ public class WXShare {
         mIwxapi.sendReq(req);
     }
 
+    public void shareToWXWebPage(String title, String description, String url) {
+
+        if (mIwxapi == null || mContext == null) {
+            return;
+        }
+
+        WXWebpageObject webpage = new WXWebpageObject();
+        webpage.webpageUrl = url;
+
+        WXMediaMessage msg = new WXMediaMessage(webpage);
+        msg.title = title;
+        msg.description = description;
+
+        SendMessageToWX.Req req = new SendMessageToWX.Req();
+        req.transaction = buildTransaction("webpage");
+        req.message = msg;
+        req.scene = SendMessageToWX.Req.WXSceneSession;
+        mIwxapi.sendReq(req);
+    }
+
     public void shareToCircle(String title, String description, String musicUrl, int imageId) {
 
         if (mIwxapi == null || mContext == null) {
@@ -69,6 +90,29 @@ public class WXShare {
 
         SendMessageToWX.Req req = new SendMessageToWX.Req();
         req.transaction = buildTransaction("music");
+        req.message = msg;
+        req.scene = SendMessageToWX.Req.WXSceneTimeline;
+        mIwxapi.sendReq(req);
+    }
+
+    public void shareToCircleWebPage(String title, String description, String url, int resId) {
+
+        if (mIwxapi == null || mContext == null) {
+            return;
+        }
+
+        WXWebpageObject webpage = new WXWebpageObject();
+        webpage.webpageUrl = url;
+
+        WXMediaMessage msg = new WXMediaMessage(webpage);
+        msg.title = title;
+        msg.description = description;
+
+        Bitmap thumb = BitmapFactory.decodeResource(mContext.getResources(), resId);
+        msg.thumbData = Util.bmpToByteArray(thumb, true);
+
+        SendMessageToWX.Req req = new SendMessageToWX.Req();
+        req.transaction = buildTransaction("webpage");
         req.message = msg;
         req.scene = SendMessageToWX.Req.WXSceneTimeline;
         mIwxapi.sendReq(req);
