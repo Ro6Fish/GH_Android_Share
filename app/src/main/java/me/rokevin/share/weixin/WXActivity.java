@@ -24,7 +24,7 @@ public class WXActivity extends BaseActivity {
                 int imageId = R.mipmap.ic_launcher;
 
                 // ShareUtil.shareToWX(title, description, url, imageId);
-                ShareUtil.shareToWXWebPage(title, description, url);
+                ShareUtil.shareToWXWebPage(title, description, url, imageId);
             }
         });
 

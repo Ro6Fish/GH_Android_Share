@@ -186,9 +186,9 @@ public class ShareUtil {
      * @param description
      * @param musicUrl
      */
-    public static void shareToWXWebPage(String title, String description, String musicUrl) {
+    public static void shareToWXWebPage(String title, String description, String musicUrl, int imageId) {
 
-        mWXShare.shareToWXWebPage(title, description, musicUrl);
+        mWXShare.shareToWXWebPage(title, description, musicUrl, imageId);
     }
 
     /**

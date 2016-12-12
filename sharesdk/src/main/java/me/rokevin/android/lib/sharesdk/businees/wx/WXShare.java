@@ -50,7 +50,7 @@ public class WXShare {
         mIwxapi.sendReq(req);
     }
 
-    public void shareToWXWebPage(String title, String description, String url) {
+    public void shareToWXWebPage(String title, String description, String url, int resId) {
 
         if (mIwxapi == null || mContext == null) {
             return;
@@ -62,6 +62,9 @@ public class WXShare {
         WXMediaMessage msg = new WXMediaMessage(webpage);
         msg.title = title;
         msg.description = description;
+
+        Bitmap thumb = BitmapFactory.decodeResource(mContext.getResources(), resId);
+        msg.thumbData = Util.bmpToByteArray(thumb, true);
 
         SendMessageToWX.Req req = new SendMessageToWX.Req();
         req.transaction = buildTransaction("webpage");
