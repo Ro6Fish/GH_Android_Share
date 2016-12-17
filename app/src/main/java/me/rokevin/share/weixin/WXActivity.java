@@ -18,12 +18,13 @@ public class WXActivity extends BaseActivity {
             @Override
             public void onClick(View view) {
 
-                String title = "这是标题";
-                String description = "这是描述";
-                String musicUrl = "http://112.74.78.105:8080/HelloWorld/download/voice2.amr";
+                String title = "叮当到";
+                String description = "叮当到喊你来抢红包啦！";
+                String url = "http://www.baidu.com";
                 int imageId = R.mipmap.ic_launcher;
 
-                ShareUtil.shareToWX(title, description, musicUrl, imageId);
+                // ShareUtil.shareToWX(title, description, url, imageId);
+                ShareUtil.shareToWXWebPage(title, description, url);
             }
         });
 
@@ -31,12 +32,13 @@ public class WXActivity extends BaseActivity {
             @Override
             public void onClick(View view) {
 
-                String title = "这是标题";
-                String description = "这是描述";
-                String musicUrl = "http://112.74.78.105:8080/HelloWorld/download/voice2.amr";
+                String title = "订单更多，还有补贴，快来叮当到！";
+                String description = "叮当到喊你来抢红包啦！";
+                String url = "http://www.baidu.com";
                 int imageId = R.mipmap.ic_launcher;
 
-                ShareUtil.shareToCircle(title, description, musicUrl, imageId);
+                //ShareUtil.shareToCircle(title, description, musicUrl, imageId);
+                ShareUtil.shareToCircleWebPage(title, description, url, imageId);
             }
         });
 

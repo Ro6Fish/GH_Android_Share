@@ -3,6 +3,7 @@ package me.rokevin.android.lib.sharesdk.util;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.text.TextUtils;
 
 import com.sina.weibo.sdk.api.share.IWeiboHandler;
@@ -166,7 +167,7 @@ public class ShareUtil {
     //===============================微信===============================//
 
     /**
-     * 分享到好友
+     * 分享音乐到好友
      *
      * @param title
      * @param description
@@ -176,6 +177,18 @@ public class ShareUtil {
     public static void shareToWX(String title, String description, String musicUrl, int imageId) {
 
         mWXShare.shareToWX(title, description, musicUrl, imageId);
+    }
+
+    /**
+     * 分享网页到好友
+     *
+     * @param title
+     * @param description
+     * @param musicUrl
+     */
+    public static void shareToWXWebPage(String title, String description, String musicUrl) {
+
+        mWXShare.shareToWXWebPage(title, description, musicUrl);
     }
 
     /**
@@ -189,6 +202,18 @@ public class ShareUtil {
     public static void shareToCircle(String title, String description, String musicUrl, int imageId) {
 
         mWXShare.shareToCircle(title, description, musicUrl, imageId);
+    }
+
+    /**
+     * 分享网页到好友
+     *
+     * @param title
+     * @param description
+     * @param musicUrl
+     */
+    public static void shareToCircleWebPage(String title, String description, String musicUrl, int resId) {
+
+        mWXShare.shareToCircleWebPage(title, description, musicUrl, resId);
     }
 
     //===============================微信===============================//
@@ -323,4 +348,52 @@ public class ShareUtil {
     }
 
     //================================Sina=============================//
+
+    /**
+     * 发送邮件
+     *
+     * @param context
+     * @param subject  邮件主题
+     * @param content  邮件内容
+     * @param emailUrl 邮件地址
+     */
+    public static void shareToMail(Activity context, String subject, String content, String emailUrl) {
+
+        Intent email = new Intent(android.content.Intent.ACTION_SEND);
+
+        email.setType("plain/text");
+
+        String emailBody = content + emailUrl;
+
+        //邮件主题
+        email.putExtra(android.content.Intent.EXTRA_SUBJECT, subject);
+
+        //邮件内容
+        email.putExtra(android.content.Intent.EXTRA_TEXT, emailBody);
+
+        context.startActivityForResult(Intent.createChooser(email, "请选择邮件发送内容"), 1001);
+    }
+
+    /**
+     * 发短信
+     *
+     * @param context
+     * @param content 分享内容
+     * @param webUrl  分享地址
+     */
+    public static void shareToSMS(Activity context, String content, String webUrl) {
+        String smsBody = content + webUrl;
+//        Uri smsToUri = Uri.parse("smsto:");
+//        Intent sendIntent = new Intent(Intent.ACTION_VIEW, smsToUri);
+//        //sendIntent.putExtra("address", "123456"); // 电话号码，这行去掉的话，默认就没有电话
+//        //短信内容
+//        sendIntent.putExtra("sms_body", smsBody);
+//        sendIntent.setType("vnd.android-dir/mms-sms");
+//        context.startActivityForResult(sendIntent, 1002);
+
+        Uri smsToUri = Uri.parse("smsto:");
+        Intent intent = new Intent(Intent.ACTION_SENDTO, smsToUri);
+        intent.putExtra("sms_body", smsBody);
+        context.startActivityForResult(intent, 1002);
+    }
 }
