@@ -1,4 +1,4 @@
-package me.rokevin.android.lib.sharesdk.businees.qq;
+package me.rokevin.android.lib.sharesdk.businees.qq.model;
 
 /**
  * Created by luokaiwen on 16/11/1.
@@ -14,7 +14,7 @@ package me.rokevin.android.lib.sharesdk.businees.qq;
  * "access_token":"xxxxxxxxxxxxxxxxxxxxx"
  * }
  */
-public class QQToken {
+public class QQAccessToken {
 
     private String openid;
     private String access_token;
@@ -46,7 +46,7 @@ public class QQToken {
 
     @Override
     public String toString() {
-        return "QQToken{" +
+        return "QQAccessToken{" +
                 "openid='" + openid + '\'' +
                 ", access_token='" + access_token + '\'' +
                 ", expires_in='" + expires_in + '\'' +

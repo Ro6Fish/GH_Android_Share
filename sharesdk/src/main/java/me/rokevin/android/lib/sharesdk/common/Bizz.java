@@ -14,5 +14,6 @@ public class Bizz {
         public static final String QQ = "2";
         public static final String SINA = "3";
         public static final String DOUBAN = "4";
+        public static final String QQ_ZONE = "4";
     }
 }

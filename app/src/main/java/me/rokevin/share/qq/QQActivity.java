@@ -6,8 +6,9 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-import me.rokevin.android.lib.sharesdk.businees.qq.QQLogin;
-import me.rokevin.android.lib.sharesdk.businees.qq.QQUserInfo;
+import me.rokevin.android.lib.sharesdk.businees.qq.QQAuth;
+import me.rokevin.android.lib.sharesdk.businees.qq.model.QQAccessToken;
+import me.rokevin.android.lib.sharesdk.businees.qq.model.QQUserInfo;
 import me.rokevin.android.lib.sharesdk.util.LogUtil;
 import me.rokevin.android.lib.sharesdk.util.ShareUtil;
 import me.rokevin.share.BaseActivity;
@@ -58,7 +59,14 @@ public class QQActivity extends BaseActivity {
             public void onClick(View view) {
 
                 // scope 请求范围 all全部
-                ShareUtil.loginQQ(QQActivity.this, "all", null);
+                ShareUtil.loginQQ(QQActivity.this, "all", new QQAuth.QQAuthListener() {
+
+                    @Override
+                    public void onAuth(QQAccessToken token) {
+
+                        LogUtil.e(TAG, "获取到的授权信息:" + token.toString());
+                    }
+                });
             }
         });
 
@@ -79,12 +87,13 @@ public class QQActivity extends BaseActivity {
 
                 } else {
 
-                    ShareUtil.getUserInfoQQ(new QQLogin.UserInfoQQListener() {
-                        @Override
-                        public void userInfo(QQUserInfo qqUserInfo) {
+                    ShareUtil.getUserInfoQQ(new QQAuth.QQUserInfoListener() {
 
-                            LogUtil.e(TAG, "获取到的用户信息:" + qqUserInfo.toString());
-                            tvInfo.setText(qqUserInfo.toString());
+                        @Override
+                        public void onUserInfo(QQUserInfo user) {
+
+                            LogUtil.e(TAG, "获取到的用户信息:" + user.toString());
+                            tvInfo.setText(user.toString());
                         }
                     });
                 }

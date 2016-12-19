@@ -1,4 +1,4 @@
-package me.rokevin.android.lib.sharesdk.businees.qq;
+package me.rokevin.android.lib.sharesdk.businees.qq.model;
 
 /**
  * Created by luokaiwen on 16/11/1.

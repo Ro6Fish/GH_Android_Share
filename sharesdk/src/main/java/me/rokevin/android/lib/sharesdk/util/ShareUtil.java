@@ -17,10 +17,10 @@ import com.tencent.tauth.Tencent;
 import com.tencent.tauth.UiError;
 
 import me.rokevin.android.lib.sharesdk.R;
-import me.rokevin.android.lib.sharesdk.businees.qq.QQLogin;
+import me.rokevin.android.lib.sharesdk.businees.qq.QQAuth;
 import me.rokevin.android.lib.sharesdk.businees.qq.QQShare;
-import me.rokevin.android.lib.sharesdk.businees.qq.QQToken;
 import me.rokevin.android.lib.sharesdk.businees.qq.QQTokenKeeper;
+import me.rokevin.android.lib.sharesdk.businees.qq.model.QQAccessToken;
 import me.rokevin.android.lib.sharesdk.businees.sina.SinaLogin;
 import me.rokevin.android.lib.sharesdk.businees.sina.SinaShare;
 import me.rokevin.android.lib.sharesdk.businees.wx.WXLogin;
@@ -55,7 +55,7 @@ public class ShareUtil {
     private static WXLogin mWXLogin;
 
     private static QQShare mQQShare;
-    private static QQLogin mQQLogin;
+    private static QQAuth mQQAuth;
 
     private static SinaShare mSinaShare;
     private static SinaLogin mSinaLogin;
@@ -121,16 +121,16 @@ public class ShareUtil {
 
         mTencent = Tencent.createInstance(QQ_OPEN_ID, context);
 
-        QQToken qqToken = QQTokenKeeper.readAccessToken(mContext);
+        QQAccessToken qqAccessToken = QQTokenKeeper.readAccessToken(mContext);
 
-        if (qqToken != null) {
+        if (qqAccessToken != null) {
 
-            mTencent.setOpenId(qqToken.getOpenid());
-            mTencent.setAccessToken(qqToken.getAccess_token(), String.valueOf(qqToken.getExpires_in()));
+            mTencent.setOpenId(qqAccessToken.getOpenid());
+            mTencent.setAccessToken(qqAccessToken.getAccess_token(), String.valueOf(qqAccessToken.getExpires_in()));
         }
 
         mQQShare = new QQShare(mContext, mTencent);
-        mQQLogin = new QQLogin(mContext, mTencent);
+        mQQAuth = new QQAuth(mContext, mTencent);
     }
 
     /**
@@ -233,28 +233,8 @@ public class ShareUtil {
      * @param appSource
      */
     public static void shareToQQ(Activity activity, String title, String summary, String audioUrl, String imageUrl, String targetUrl, String appName, String appSource) {
+
         mQQShare.shareToQQ(activity, title, summary, audioUrl, imageUrl, targetUrl, appName, appSource);
-    }
-
-    /**
-     * QQ登录
-     *
-     * @param activity
-     * @param scope
-     * @param iUiListener
-     */
-    public static void loginQQ(Activity activity, String scope, IUiListener iUiListener) {
-
-        mQQLogin.login(activity, scope, iUiListener);
-    }
-
-    /**
-     * QQ退出登录
-     */
-    public static void logoutQQ() {
-
-        mQQLogin.logout();
-        QQTokenKeeper.clear(mContext);
     }
 
     /**
@@ -264,21 +244,36 @@ public class ShareUtil {
      */
     public static boolean isLoginQQ() {
 
-        boolean isLogin = false;
+        return mQQAuth.isLogin();
+    }
 
-        if (mQQLogin.isLogin()) {
-            isLogin = true;
-        }
+    /**
+     * QQ登录
+     *
+     * @param activity
+     * @param scope
+     * @param listener
+     */
+    public static void loginQQ(Activity activity, String scope, QQAuth.QQAuthListener listener) {
 
-        return isLogin;
+        mQQAuth.auth(activity, scope, listener);
+    }
+
+    /**
+     * QQ退出登录
+     */
+    public static void logoutQQ() {
+
+        mQQAuth.logout();
+        QQTokenKeeper.clear(mContext);
     }
 
     /**
      * 获取用户信息
      */
-    public static void getUserInfoQQ(QQLogin.UserInfoQQListener userInfoQQListener) {
+    public static void getUserInfoQQ(QQAuth.QQUserInfoListener listener) {
 
-        mQQLogin.getUserInfo(userInfoQQListener);
+        mQQAuth.getUserInfo(listener);
     }
 
     /**

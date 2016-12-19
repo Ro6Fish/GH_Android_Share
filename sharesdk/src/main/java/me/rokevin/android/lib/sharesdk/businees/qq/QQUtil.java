@@ -34,9 +34,9 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.util.List;
 
-public class Util {
+public class QQUtil {
 
-    private static final String TAG = "SDK_Sample.Util";
+    private static final String TAG = "SDK_Sample.QQUtil";
 
     private static Dialog mProgressDialog;
     private static Toast mToast;
@@ -101,7 +101,8 @@ public class Util {
      * 将字符串编码成16进制数字,适用于所有字符（包括中文）
      */
     public static String toHexString(String str) {
-//根据默认编码获取字节数组
+
+        //根据默认编码获取字节数组
         byte[] bytes = null;
         try {
             bytes = str.getBytes("UTF-8");
@@ -110,7 +111,8 @@ public class Util {
         }
         if (bytes == null) return null;
         StringBuilder sb = new StringBuilder(bytes.length * 2);
-//将字节数组中每个字节拆解成2位16进制整数
+
+        //将字节数组中每个字节拆解成2位16进制整数
         for (int i = 0; i < bytes.length; i++) {
             sb.append(hexString.charAt((bytes[i] & 0xf0) >> 4));
             sb.append(hexString.charAt((bytes[i] & 0x0f) >> 0));
@@ -416,7 +418,7 @@ public class Util {
                                               String title) {
         if (msg == null) return;
         String rmsg = msg.replace(",", "\n");
-        Log.d("Util", rmsg);
+        Log.d("QQUtil", rmsg);
         new AlertDialog.Builder(context).setTitle(title).setMessage(rmsg)
                 .setNegativeButton("知道了", null).create().show();
     }

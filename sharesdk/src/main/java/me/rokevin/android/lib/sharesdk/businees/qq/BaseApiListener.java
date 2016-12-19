@@ -37,9 +37,9 @@ public class BaseApiListener implements IRequestListener {
             Bundle params = msg.getData();
             String title = params.getString("title");
             String response = params.getString("response");
-            Util.showResultDialog(mActivity, response, title);
+            QQUtil.showResultDialog(mActivity, response, title);
             super.handleMessage(msg);
-            Util.dismissDialog();
+            QQUtil.dismissDialog();
         }
 
     };

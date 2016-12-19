@@ -21,7 +21,7 @@ import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.text.TextUtils;
 
-import me.rokevin.android.lib.sharesdk.businees.qq.QQToken;
+import me.rokevin.android.lib.sharesdk.businees.qq.model.QQAccessToken;
 
 /**
  * QQ Token存储
@@ -40,7 +40,7 @@ public class QQTokenKeeper {
      * @param context 应用程序上下文环境
      * @param token   Token 对象
      */
-    public static void writeAccessToken(Context context, QQToken token) {
+    public static void writeAccessToken(Context context, QQAccessToken token) {
         if (null == context || null == token) {
             return;
         }
@@ -59,7 +59,7 @@ public class QQTokenKeeper {
      * @param context 应用程序上下文环境
      * @return 返回 Token 对象
      */
-    public static QQToken readAccessToken(Context context) {
+    public static QQAccessToken readAccessToken(Context context) {
 
         if (null == context) {
             return null;
@@ -72,7 +72,7 @@ public class QQTokenKeeper {
             return null;
         }
 
-        QQToken token = new QQToken();
+        QQAccessToken token = new QQAccessToken();
         token.setAccess_token(pref.getString(KEY_ACCESS_TOKEN, ""));
         token.setOpenid(openId);
         token.setExpires_in(pref.getLong(KEY_EXPIRES_IN, 0));

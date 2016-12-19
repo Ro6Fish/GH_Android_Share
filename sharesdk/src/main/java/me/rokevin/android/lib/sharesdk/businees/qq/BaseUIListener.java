@@ -23,17 +23,17 @@ public class BaseUIListener implements IUiListener {
             switch (msg.what) {
                 case ON_COMPLETE:
                     JSONObject response = (JSONObject) msg.obj;
-                    Util.showResultDialog(mContext, response.toString(), "onComplete");
-                    Util.dismissDialog();
+                    QQUtil.showResultDialog(mContext, response.toString(), "onComplete");
+                    QQUtil.dismissDialog();
                     break;
                 case ON_ERROR:
                     UiError e = (UiError) msg.obj;
-                    Util.showResultDialog(mContext, "errorMsg:" + e.errorMessage
+                    QQUtil.showResultDialog(mContext, "errorMsg:" + e.errorMessage
                             + "errorDetail:" + e.errorDetail, "onError");
-                    Util.dismissDialog();
+                    QQUtil.dismissDialog();
                     break;
                 case ON_CANCEL:
-                    Util.toastMessage((Activity) mContext, "onCancel");
+                    QQUtil.toastMessage((Activity) mContext, "onCancel");
                     break;
             }
         }
