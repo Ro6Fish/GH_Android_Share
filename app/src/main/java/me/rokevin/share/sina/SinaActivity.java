@@ -10,12 +10,15 @@ import android.widget.Toast;
 import com.sina.weibo.sdk.api.share.BaseResponse;
 import com.sina.weibo.sdk.api.share.IWeiboHandler;
 import com.sina.weibo.sdk.api.share.IWeiboShareAPI;
+import com.sina.weibo.sdk.auth.Oauth2AccessToken;
 import com.sina.weibo.sdk.constant.WBConstants;
 
+import me.rokevin.android.lib.sharesdk.businees.sina.SinaLogin;
+import me.rokevin.android.lib.sharesdk.businees.sina.models.SinaUser;
+import me.rokevin.android.lib.sharesdk.util.LogUtil;
 import me.rokevin.android.lib.sharesdk.util.ShareUtil;
 import me.rokevin.share.BaseActivity;
 import me.rokevin.share.R;
-import me.rokevin.share.ShareConfig;
 import me.rokevin.share.test.ShareData;
 import me.rokevin.share.test.TestData;
 
@@ -56,7 +59,13 @@ public class SinaActivity extends BaseActivity implements IWeiboHandler.Response
             @Override
             public void onClick(View view) {
 
-                ShareUtil.loginSina(SinaActivity.this);
+                ShareUtil.loginSina(SinaActivity.this, new SinaLogin.SinaAuthListener() {
+                    @Override
+                    public void onAuth(Oauth2AccessToken token) {
+
+                        LogUtil.e(TAG, "token:" + token.toString());
+                    }
+                });
             }
         });
 
@@ -83,7 +92,13 @@ public class SinaActivity extends BaseActivity implements IWeiboHandler.Response
             @Override
             public void onClick(View view) {
 
-                ShareUtil.getUserInfoSina();
+                ShareUtil.getUserInfoSina(new SinaLogin.SinaUserInfoListener() {
+                    @Override
+                    public void onUserInfo(SinaUser user) {
+
+                        LogUtil.e(TAG, "user:" + user.toString());
+                    }
+                });
             }
         });
     }

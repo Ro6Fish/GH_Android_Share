@@ -75,7 +75,7 @@ public class SinaLogin {
         mAuthInfo = new AuthInfo(mContext, appKey, Constants.REDIRECT_URL, Constants.SCOPE);
 
         // 获取本地存储的AccessToken如果没有则要登录下
-        mAccessToken = AccessTokenKeeper.readAccessToken(mContext);
+        mAccessToken = SinaTokenKeeper.readAccessToken(mContext);
     }
 
     /**
@@ -92,14 +92,18 @@ public class SinaLogin {
         }
     }
 
-    public void login(Activity activity) {
+    public void login(Activity activity, SinaAuthListener listener) {
 
         if (null == mSsoHandler && mAuthInfo != null) {
             mSsoHandler = new SsoHandler(activity, mAuthInfo);
         }
 
         if (mSsoHandler != null) {
+
+            mSinaAuthListener = listener;
+
             mSsoHandler.authorize(mAuthListener);
+
         } else {
             LogUtil.e(TAG, "Please setWeiboAuthInfo(...) for first");
         }
@@ -110,16 +114,18 @@ public class SinaLogin {
         /**
          * 注销按钮：该按钮未做任何封装，直接调用对应 API 接口
          */
-        new LogoutAPI(mContext, mAppKey, AccessTokenKeeper.readAccessToken(mContext)).logout(mLogoutListener);
+        new LogoutAPI(mContext, mAppKey, SinaTokenKeeper.readAccessToken(mContext)).logout(mLogoutListener);
     }
 
-    public void getUserInfo() {
+    public void getUserInfo(SinaUserInfoListener listener) {
 
         if (mUsersAPI == null) {
 
             // 获取用户信息接口
             mUsersAPI = new UsersAPI(mContext, mAppKey, mAccessToken);
         }
+
+        mSinaUserInfoListener = listener;
 
         long uid = Long.parseLong(mAccessToken.getUid());
         mUsersAPI.show(uid, mUserInfoListener);
@@ -142,7 +148,11 @@ public class SinaLogin {
 
             if (mAccessToken != null && mAccessToken.isSessionValid()) {
                 LogUtil.e(TAG, "mAccessToken:" + mAccessToken.getToken());
-                AccessTokenKeeper.writeAccessToken(mContext, mAccessToken);
+                SinaTokenKeeper.writeAccessToken(mContext, mAccessToken);
+            }
+
+            if (mSinaAuthListener != null) {
+                mSinaAuthListener.onAuth(mAccessToken);
             }
         }
 
@@ -169,7 +179,7 @@ public class SinaLogin {
                     String value = obj.getString("result");
 
                     if ("true".equalsIgnoreCase(value)) {
-                        AccessTokenKeeper.clear(mContext);
+                        SinaTokenKeeper.clear(mContext);
                     }
 
                     // tvToken.setText("token:");
@@ -184,7 +194,6 @@ public class SinaLogin {
 
         }
     }
-
 
     // 获取用户信息
 
@@ -201,12 +210,12 @@ public class SinaLogin {
                 LogUtil.e(TAG, response);
                 // 调用 SinaUser#parse 将JSON串解析成User对象
                 SinaUser user = SinaUser.parse(response);
-                if (user != null) {
-                    Toast.makeText(mContext, "获取User信息成功，用户昵称：" + user.screen_name, Toast.LENGTH_LONG).show();
-                    // tvInfo.setText("用户信息:" + user.toString());
-                } else {
-                    Toast.makeText(mContext, response, Toast.LENGTH_LONG).show();
+
+                if (mSinaUserInfoListener != null) {
+                    mSinaUserInfoListener.onUserInfo(user);
                 }
+
+                LogUtil.e(TAG, "获取User信息成功，用户昵称：" + user.toString());
             }
         }
 
@@ -225,7 +234,7 @@ public class SinaLogin {
      */
     public void refreshTokenRequest(String appKey) {
 
-        Oauth2AccessToken token = AccessTokenKeeper.readAccessToken(mContext);
+        Oauth2AccessToken token = SinaTokenKeeper.readAccessToken(mContext);
         RefreshTokenApi.create(mContext).refreshToken(appKey, token.getRefreshToken(), new RequestListener() {
 
             @Override
@@ -239,5 +248,19 @@ public class SinaLogin {
                 Toast.makeText(mContext, "RefreshToken Result : " + response, Toast.LENGTH_LONG).show();
             }
         });
+    }
+
+    private SinaAuthListener mSinaAuthListener;
+
+    private SinaUserInfoListener mSinaUserInfoListener;
+
+    public interface SinaAuthListener {
+
+        void onAuth(Oauth2AccessToken token);
+    }
+
+    public interface SinaUserInfoListener {
+
+        void onUserInfo(SinaUser user);
     }
 }

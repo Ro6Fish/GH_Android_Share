@@ -314,9 +314,9 @@ public class ShareUtil {
         mSinaShare.sendSingleMessage(activity, title, description, musicUrl, duration, webUrl, defaultText, imageId);
     }
 
-    public static void loginSina(Activity activity) {
+    public static void loginSina(Activity activity, SinaLogin.SinaAuthListener listener) {
 
-        mSinaLogin.login(activity);
+        mSinaLogin.login(activity, listener);
     }
 
     public static void logoutSina() {
@@ -324,9 +324,9 @@ public class ShareUtil {
         mSinaLogin.logout();
     }
 
-    public static void getUserInfoSina() {
+    public static void getUserInfoSina(SinaLogin.SinaUserInfoListener listener) {
 
-        mSinaLogin.getUserInfo();
+        mSinaLogin.getUserInfo(listener);
     }
 
     public static void onNewIntent(Intent intent, IWeiboHandler.Response response) {
