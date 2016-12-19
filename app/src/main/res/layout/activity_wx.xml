@@ -20,12 +20,20 @@
         android:text="分享朋友圈" />
 
     <Button
-        android:id="@+id/btn_login"
+        android:id="@+id/btn_code"
         android:layout_width="match_parent"
         android:layout_height="48dp"
         android:gravity="center"
-        android:text="登录"
-        android:visibility="gone" />
+        android:text="获取code"
+        android:visibility="visible" />
+
+    <Button
+        android:id="@+id/btn_token"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:gravity="center"
+        android:text="获取token"
+        android:visibility="visible" />
 
     <Button
         android:id="@+id/btn_get_user_info"
@@ -33,7 +41,7 @@
         android:layout_height="48dp"
         android:gravity="center"
         android:text="获取用户信息"
-        android:visibility="gone" />
+        android:visibility="visible" />
 
     <TextView
         android:id="@+id/tv_info"

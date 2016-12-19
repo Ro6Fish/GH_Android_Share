@@ -216,6 +216,56 @@ public class ShareUtil {
         mWXShare.shareToCircleWebPage(title, description, musicUrl, resId);
     }
 
+    /**
+     * 判断微信是否登录
+     *
+     * @return
+     */
+    public static boolean isLoginWX() {
+
+        // TODO
+        return true;
+    }
+
+    /**
+     * 微信登录
+     */
+    public static void getWXCode() {
+
+        // mWXLogin.getCode();
+    }
+
+    /**
+     * 获取Token
+     *
+     * @param code 获取token的code
+     */
+    public static void getWXToken(String appId, String secret, String code) {
+
+        mWXLogin.getAccessToken(appId, secret, code);
+    }
+
+    public static void refreshWXToken() {
+
+    }
+
+    /**
+     * QQ退出登录
+     */
+    public static void logoutWX() {
+
+//        mWXShare.logout();
+//        QQTokenKeeper.clear(mContext);
+    }
+
+    /**
+     * 获取用户信息
+     */
+    public static void getWXUserInfo(QQAuth.QQUserInfoListener listener) {
+
+        // mWXLogin.getUserInfo(listener);
+    }
+
     //===============================微信===============================//
 
     //================================QQ===============================//
