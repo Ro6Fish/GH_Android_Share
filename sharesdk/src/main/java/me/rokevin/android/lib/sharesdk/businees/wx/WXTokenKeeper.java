@@ -14,27 +14,29 @@
  * limitations under the License.
  */
 
-package me.rokevin.android.lib.sharesdk.businees.sina;
+package me.rokevin.android.lib.sharesdk.businees.wx;
 
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
+import android.text.TextUtils;
 
-import com.sina.weibo.sdk.auth.Oauth2AccessToken;
+import me.rokevin.android.lib.sharesdk.businees.wx.model.WXAccessToken;
 
 /**
- * 该类定义了微博授权时所需要的参数。
- *
- * @author SINA
- * @since 2013-10-07
+ * WX Token存储
  */
-public class SinaTokenKeeper {
-    private static final String PREFERENCES_NAME = "share_sdk_sina";
+public class WXTokenKeeper {
 
-    private static final String KEY_UID = "uid";
+    private static final String PREFERENCES_NAME = "share_sdk_wx";
+
+    private static final String KEY_OPEN_ID = "openid";
     private static final String KEY_ACCESS_TOKEN = "access_token";
     private static final String KEY_EXPIRES_IN = "expires_in";
+    private static final String KEY_RECORD_TIME = "record_time";
     private static final String KEY_REFRESH_TOKEN = "refresh_token";
+    private static final String KEY_UNIONID = "unionid";
+    private static final String KEY_SCOPE = "scope";
 
     /**
      * 保存 Token 对象到 SharedPreferences。
@@ -42,17 +44,20 @@ public class SinaTokenKeeper {
      * @param context 应用程序上下文环境
      * @param token   Token 对象
      */
-    public static void writeAccessToken(Context context, Oauth2AccessToken token) {
+    public static void writeAccessToken(Context context, WXAccessToken token) {
         if (null == context || null == token) {
             return;
         }
 
         SharedPreferences pref = context.getSharedPreferences(PREFERENCES_NAME, Context.MODE_APPEND);
         Editor editor = pref.edit();
-        editor.putString(KEY_UID, token.getUid());
-        editor.putString(KEY_ACCESS_TOKEN, token.getToken());
+        editor.putString(KEY_OPEN_ID, token.getOpenid());
+        editor.putString(KEY_ACCESS_TOKEN, token.getAccessToken());
+        editor.putLong(KEY_EXPIRES_IN, Long.parseLong(token.getExpiresIn()));
+        editor.putLong(KEY_RECORD_TIME, System.currentTimeMillis() / 1000);
         editor.putString(KEY_REFRESH_TOKEN, token.getRefreshToken());
-        editor.putLong(KEY_EXPIRES_IN, token.getExpiresTime());
+        editor.putString(KEY_UNIONID, token.getUnionid());
+        editor.putString(KEY_SCOPE, token.getScope());
         editor.commit();
     }
 
@@ -62,17 +67,27 @@ public class SinaTokenKeeper {
      * @param context 应用程序上下文环境
      * @return 返回 Token 对象
      */
-    public static Oauth2AccessToken readAccessToken(Context context) {
+    public static WXAccessToken readAccessToken(Context context) {
+
         if (null == context) {
             return null;
         }
 
-        Oauth2AccessToken token = new Oauth2AccessToken();
         SharedPreferences pref = context.getSharedPreferences(PREFERENCES_NAME, Context.MODE_APPEND);
-        token.setUid(pref.getString(KEY_UID, ""));
-        token.setToken(pref.getString(KEY_ACCESS_TOKEN, ""));
+        String openId = pref.getString(KEY_OPEN_ID, "");
+
+        if (TextUtils.isEmpty(openId)) {
+            return null;
+        }
+
+        WXAccessToken token = new WXAccessToken();
+        token.setOpenid(openId);
+        token.setAccessToken(pref.getString(KEY_ACCESS_TOKEN, ""));
+        token.setExpiresIn(pref.getLong(KEY_EXPIRES_IN, 0) + "");
+        token.setRecordTime(pref.getLong(KEY_RECORD_TIME, 0) + "");
         token.setRefreshToken(pref.getString(KEY_REFRESH_TOKEN, ""));
-        token.setExpiresTime(pref.getLong(KEY_EXPIRES_IN, 0));
+        token.setUnionid(pref.getString(KEY_UNIONID, ""));
+        token.setScope(pref.getString(KEY_SCOPE, ""));
 
         return token;
     }

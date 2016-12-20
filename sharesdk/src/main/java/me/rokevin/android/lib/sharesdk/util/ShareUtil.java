@@ -25,6 +25,7 @@ import me.rokevin.android.lib.sharesdk.businees.sina.SinaLogin;
 import me.rokevin.android.lib.sharesdk.businees.sina.SinaShare;
 import me.rokevin.android.lib.sharesdk.businees.wx.WXLogin;
 import me.rokevin.android.lib.sharesdk.businees.wx.WXShare;
+import me.rokevin.android.lib.sharesdk.businees.wx.WXTokenKeeper;
 import me.rokevin.android.lib.sharesdk.exception.AppKeyException;
 
 /**
@@ -223,16 +224,25 @@ public class ShareUtil {
      */
     public static boolean isLoginWX() {
 
-        // TODO
-        return true;
+        return mWXLogin.isLogin();
+    }
+
+    /**
+     * 判断微信是否安装
+     *
+     * @return
+     */
+    public static boolean isWXInstall() {
+
+        return mWXLogin.isInstall();
     }
 
     /**
      * 微信登录
      */
-    public static void getWXCode() {
+    public static void getWXCode(String state) {
 
-        // mWXLogin.getCode();
+        mWXLogin.getCode(state);
     }
 
     /**
@@ -240,30 +250,37 @@ public class ShareUtil {
      *
      * @param code 获取token的code
      */
-    public static void getWXToken(String appId, String secret, String code) {
+    public static void getWXToken(String appId, String secret, String code, WXLogin.WXGetTokenListener listener) {
 
-        mWXLogin.getAccessToken(appId, secret, code);
-    }
-
-    public static void refreshWXToken() {
-
+        mWXLogin.getAccessToken(appId, secret, code, listener);
     }
 
     /**
-     * QQ退出登录
+     * 刷新Token
+     *
+     * @param appId
+     * @param refreshToken
+     * @param listener
+     */
+    public static void refreshWXToken(String appId, String refreshToken, WXLogin.WXGetTokenListener listener) {
+
+        mWXLogin.refreshToken(appId, refreshToken, listener);
+    }
+
+    /**
+     * 微信退出登录
      */
     public static void logoutWX() {
 
-//        mWXShare.logout();
-//        QQTokenKeeper.clear(mContext);
+        WXTokenKeeper.clear(mContext);
     }
 
     /**
      * 获取用户信息
      */
-    public static void getWXUserInfo(QQAuth.QQUserInfoListener listener) {
+    public static void getWXUserInfo(String token, String openId, WXLogin.WXGetUserInfoListener listener) {
 
-        // mWXLogin.getUserInfo(listener);
+        mWXLogin.getUserInfo(token, openId, listener);
     }
 
     //===============================微信===============================//

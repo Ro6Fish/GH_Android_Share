@@ -3,10 +3,17 @@ package me.rokevin.share.weixin;
 import android.os.Bundle;
 import android.view.View;
 
+import de.greenrobot.event.EventBus;
+import me.rokevin.android.lib.sharesdk.businees.wx.WXLogin;
+import me.rokevin.android.lib.sharesdk.businees.wx.WXTokenKeeper;
+import me.rokevin.android.lib.sharesdk.businees.wx.model.WXAccessToken;
+import me.rokevin.android.lib.sharesdk.businees.wx.model.WXUserInfo;
+import me.rokevin.android.lib.sharesdk.util.LogUtil;
 import me.rokevin.android.lib.sharesdk.util.ShareUtil;
 import me.rokevin.eventbus.WXCodeEvent;
 import me.rokevin.share.BaseActivity;
 import me.rokevin.share.R;
+import me.rokevin.share.ShareConfig;
 
 public class WXActivity extends BaseActivity {
 
@@ -47,7 +54,11 @@ public class WXActivity extends BaseActivity {
             @Override
             public void onClick(View view) {
 
-                ShareUtil.getWXCode();
+                WXAccessToken token = WXTokenKeeper.readAccessToken(mContext);
+
+                String state = "123";
+                ShareUtil.getWXCode(state);
+
             }
         });
 
@@ -58,15 +69,43 @@ public class WXActivity extends BaseActivity {
 
             }
         });
+
+        EventBus.getDefault().register(this);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+        EventBus.getDefault().unregister(this);
     }
 
     public void onEvent(WXCodeEvent event) {
 
+        String appId = ShareConfig.WX_APP_ID;
+        String secret = ShareConfig.WX_SECRET;
+
         String code = event.getCode();
 
-        String appId = "";
-        String secret = "";
+        ShareUtil.getWXToken(appId, secret, code, new WXLogin.WXGetTokenListener() {
+            @Override
+            public void onToken(WXAccessToken token) {
 
-        ShareUtil.getWXToken(appId, secret, code);
+                String accessToken = token.getAccessToken();
+                String openid = token.getOpenid();
+
+                LogUtil.e(TAG, "getUserInfo accessToken:" + accessToken);
+                LogUtil.e(TAG, "getUserInfo openid:" + openid);
+
+                ShareUtil.getWXUserInfo(accessToken, token.getOpenid(), new WXLogin.WXGetUserInfoListener() {
+
+                    @Override
+                    public void onUserInfo(WXUserInfo userInfo) {
+
+                        LogUtil.e(TAG, "userInfo：" + userInfo);
+                    }
+                });
+            }
+        });
     }
 }

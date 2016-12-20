@@ -28,7 +28,7 @@ import me.rokevin.android.lib.sharesdk.businees.qq.model.QQAccessToken;
  */
 public class QQTokenKeeper {
 
-    private static final String PREFERENCES_NAME = "share_qq";
+    private static final String PREFERENCES_NAME = "share_sdk_qq";
 
     private static final String KEY_ACCESS_TOKEN = "access_token";
     private static final String KEY_EXPIRES_IN = "expires_in";
@@ -41,6 +41,7 @@ public class QQTokenKeeper {
      * @param token   Token 对象
      */
     public static void writeAccessToken(Context context, QQAccessToken token) {
+
         if (null == context || null == token) {
             return;
         }

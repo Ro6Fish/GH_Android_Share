@@ -47,7 +47,12 @@ public class WXEntryActivity extends BaseActivity implements IWXAPIEventHandler 
 
             case ConstantsAPI.COMMAND_SENDAUTH: // 登录
 
-                String code = ((SendAuth.Resp) resp).token;
+                SendAuth.Resp resp1 = (SendAuth.Resp) resp;
+                String resultUrl = resp1.resultUrl;
+                String userName = resp1.userName;
+                LogUtil.e(TAG, "resultUrl:" + resultUrl);
+                LogUtil.e(TAG, "userName:" + userName);
+                String code = resp1.token;
                 EventBus.getDefault().post(new WXCodeEvent(code));
                 break;
 

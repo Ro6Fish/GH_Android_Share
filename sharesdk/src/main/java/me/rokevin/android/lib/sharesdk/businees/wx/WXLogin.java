@@ -6,6 +6,9 @@ import android.os.AsyncTask;
 import com.tencent.mm.sdk.openapi.IWXAPI;
 import com.tencent.mm.sdk.openapi.SendAuth;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -14,6 +17,8 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 
+import me.rokevin.android.lib.sharesdk.businees.wx.model.WXAccessToken;
+import me.rokevin.android.lib.sharesdk.businees.wx.model.WXUserInfo;
 import me.rokevin.android.lib.sharesdk.util.LogUtil;
 
 /**
@@ -28,6 +33,27 @@ public class WXLogin {
     public WXLogin(Context context, IWXAPI iwxapi) {
         mContext = context;
         mIwxapi = iwxapi;
+    }
+
+    /**
+     * 判断是否已登录
+     *
+     * @return token不为空就是登录
+     */
+    public boolean isLogin() {
+
+        WXAccessToken token = WXTokenKeeper.readAccessToken(mContext);
+        return token != null ? true : false;
+    }
+
+    /**
+     * 判断是否已安装
+     *
+     * @return
+     */
+    public boolean isInstall() {
+
+        return mIwxapi.isWXAppInstalled();
     }
 
     /**
@@ -50,14 +76,25 @@ public class WXLogin {
      * @param secret
      * @param code
      */
-    public void getAccessToken(String appId, String secret, String code) {
+    public void getAccessToken(String appId, String secret, String code, WXGetTokenListener listener) {
+
+        mWXGetTokenListener = listener;
 
         getAccessTokenTask.execute(appId, secret, code);
     }
 
-    public void refreshToken() {
+    /**
+     * 刷新token
+     *
+     * @param appId
+     * @param refreshToken
+     * @param listener
+     */
+    public void refreshToken(String appId, String refreshToken, WXGetTokenListener listener) {
 
+        mWXGetTokenListener = listener;
 
+        refreshTokenTask.execute(appId, refreshToken);
     }
 
     /**
@@ -66,7 +103,9 @@ public class WXLogin {
      * @param token
      * @param openId
      */
-    public void getUserInfo(String token, String openId) {
+    public void getUserInfo(String token, String openId, WXGetUserInfoListener listener) {
+
+        mWXGetUserInfoListener = listener;
 
         getUserInfoTask.execute(token, openId);
     }
@@ -101,7 +140,7 @@ public class WXLogin {
                     totalLine += line;
                 }
 
-                LogUtil.e(TAG, "totalLine:" + totalLine);
+                LogUtil.e(TAG, "token totalLine:" + totalLine);
 
             } catch (MalformedURLException e) {
                 e.printStackTrace();
@@ -111,6 +150,38 @@ public class WXLogin {
                 if (connection != null) {
                     connection.disconnect();
                 }
+            }
+
+            WXAccessToken token = null;
+
+            try {
+
+                JSONObject jsonObject = new JSONObject(totalLine);
+
+                String accessToken = jsonObject.getString("access_token");
+                String expiresIn = jsonObject.getString("expires_in");
+                String newRefreshToken = jsonObject.getString("refresh_token");
+                String openid = jsonObject.getString("openid");
+                String scope = jsonObject.getString("scope");
+                String unionid = jsonObject.getString("unionid");
+
+                token = new WXAccessToken();
+
+                token.setOpenid(openid);
+                token.setAccessToken(accessToken);
+                token.setExpiresIn(expiresIn);
+                token.setRefreshToken(newRefreshToken);
+                token.setScope(scope);
+                token.setUnionid(unionid);
+
+                WXTokenKeeper.writeAccessToken(mContext, token);
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+            if (mWXGetTokenListener != null) {
+                mWXGetTokenListener.onToken(token);
             }
 
             return totalLine;
@@ -146,7 +217,7 @@ public class WXLogin {
                     totalLine += line;
                 }
 
-                LogUtil.e(TAG, "totalLine:" + totalLine);
+                LogUtil.e(TAG, "refresh token totalLine:" + totalLine);
 
             } catch (MalformedURLException e) {
                 e.printStackTrace();
@@ -156,6 +227,36 @@ public class WXLogin {
                 if (connection != null) {
                     connection.disconnect();
                 }
+            }
+
+            WXAccessToken token = null;
+
+            try {
+
+                JSONObject jsonObject = new JSONObject(totalLine);
+
+                String accessToken = jsonObject.getString("access_token");
+                String expiresIn = jsonObject.getString("expires_in");
+                String newRefreshToken = jsonObject.getString("refresh_token");
+                String openid = jsonObject.getString("openid");
+                String scope = jsonObject.getString("scope");
+                String unionid = jsonObject.getString("unionid");
+
+                token = new WXAccessToken();
+
+                token.setOpenid(accessToken);
+                token.setExpiresIn(expiresIn);
+                token.setRefreshToken(newRefreshToken);
+                token.setOpenid(openid);
+                token.setScope(scope);
+                token.setUnionid(unionid);
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+            if (mWXGetTokenListener != null) {
+                mWXGetTokenListener.onToken(token);
             }
 
             return totalLine;
@@ -191,7 +292,7 @@ public class WXLogin {
                     totalLine += line;
                 }
 
-                LogUtil.e(TAG, "userInfo:" + totalLine);
+                LogUtil.e(TAG, "userInfo totalLine:" + totalLine);
 
             } catch (MalformedURLException e) {
                 e.printStackTrace();
@@ -203,7 +304,55 @@ public class WXLogin {
                 }
             }
 
+            WXUserInfo user = null;
+
+            try {
+
+                JSONObject jsonObject = new JSONObject(totalLine);
+
+                String openid = jsonObject.getString("openid");
+                String nickname = jsonObject.getString("nickname");
+                String sex = jsonObject.getString("sex");
+                String province = jsonObject.getString("province");
+                String city = jsonObject.getString("city");
+                String country = jsonObject.getString("country");
+                String headimgurl = jsonObject.getString("headimgurl");
+                String unionid = jsonObject.getString("unionid");
+
+                user = new WXUserInfo();
+
+                user.setOpenid(openid);
+                user.setNickname(nickname);
+                user.setSex(sex);
+                user.setProvince(province);
+                user.setCity(city);
+                user.setCountry(country);
+                user.setHeadimgurl(headimgurl);
+                user.setUnionid(unionid);
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+            if (mWXGetUserInfoListener != null) {
+                mWXGetUserInfoListener.onUserInfo(user);
+            }
+
             return totalLine;
         }
     };
+
+    private WXGetTokenListener mWXGetTokenListener;
+
+    private WXGetUserInfoListener mWXGetUserInfoListener;
+
+    public interface WXGetTokenListener {
+
+        void onToken(WXAccessToken token);
+    }
+
+    public interface WXGetUserInfoListener {
+
+        void onUserInfo(WXUserInfo userInfo);
+    }
 }
