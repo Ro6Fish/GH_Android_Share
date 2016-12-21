@@ -2,14 +2,11 @@ apply plugin: 'com.android.application'
 
 android {
     signingConfigs {
-
     }
     compileSdkVersion 22
     buildToolsVersion "22.0.1"
     defaultConfig {
-        // applicationId "me.rokevin.share"
-        // applicationId "com.bitch4.joke"
-        applicationId "com.hlvan.ddd.consigner"
+        applicationId "me.rokevin.share"
         minSdkVersion 14
         targetSdkVersion 22
         versionCode 1
@@ -35,4 +32,5 @@ dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     testCompile 'junit:junit:4.12'
     compile project(':sharesdk')
+    compile 'de.greenrobot:eventbus:2.4.0'
 }
