@@ -313,9 +313,9 @@ public class ShareUtil {
      * @param title
      * @param url
      */
-    public static void shareToQQZoneTextImage(Activity activity, String title, String url, IShareQQ iShareQQ) {
+    public static void shareToQQZoneTextImage(Activity activity, String title, String summary, String url, IShareQQ iShareQQ) {
 
-        mQQShare.shareToQQZone(activity, title, url, iShareQQ);
+        mQQShare.shareToQQZone(activity, title, summary, url, iShareQQ);
     }
 
     /**

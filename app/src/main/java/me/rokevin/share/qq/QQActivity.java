@@ -92,7 +92,7 @@ public class QQActivity extends BaseActivity {
                 String appName = "就是笑话";
                 String appSource = "就是笑话" + ShareConfig.QQ_OPEN_ID;
 
-                ShareUtil.shareToQQZoneTextImage(QQActivity.this, title, audioUrl, new IShareQQ() {
+                ShareUtil.shareToQQZoneTextImage(QQActivity.this, title, summary, audioUrl, new IShareQQ() {
                     @Override
                     public void onComplete(Object o) {
 
