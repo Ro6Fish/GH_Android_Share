@@ -79,21 +79,9 @@ public class QQShare {
         Bundle bundle = new Bundle();
         bundle.putInt(QzoneShare.SHARE_TO_QZONE_KEY_TYPE, QzoneShare.SHARE_TO_QZONE_TYPE_IMAGE_TEXT);
         bundle.putString(QzoneShare.SHARE_TO_QQ_TITLE, title); // 必填
-        bundle.putString(QzoneShare.SHARE_TO_QQ_SUMMARY, title); // 选填
+        bundle.putString(QzoneShare.SHARE_TO_QQ_SUMMARY, summary); // 选填
         bundle.putString(QzoneShare.SHARE_TO_QQ_TARGET_URL, url);// 必填
         bundle.putStringArrayList(QzoneShare.SHARE_TO_QQ_IMAGE_URL, imageUrls); // 选填
         mTencent.shareToQzone(activity, bundle, iShareQQ);
-    }
-
-    /**
-     * 分享到QQ空间
-     *
-     * @param activity 被分享的页面
-     * @param title    标题
-     * @param url      链接
-     */
-    public void shareToQQZone(Activity activity, String title, String url, IShareQQ iShareQQ) {
-
-        shareToQQZone(activity, title, "", url, iShareQQ);
     }
 }
