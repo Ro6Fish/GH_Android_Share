@@ -58,6 +58,8 @@ public class WXEntryActivity extends BaseActivity implements IWXAPIEventHandler 
 
             case ConstantsAPI.COMMAND_SENDMESSAGE_TO_WX: // 分享
 
+                LogUtil.e(TAG, resp.toString());
+
                 break;
         }
 

@@ -17,5 +17,7 @@
     <string name="weibosdk_demo_toast_share_canceled">取消分享</string>
     <string name="weibosdk_demo_toast_share_response_args_success">收到微博发起的请求成功</string>
     <string name="weibosdk_demo_toast_share_response_args_failed">收到客户端请求消息失败</string>
+    <string name="share_fail">分享失败</string>
+    <string name="share_cancel">取消分享</string>
 
 </resources>

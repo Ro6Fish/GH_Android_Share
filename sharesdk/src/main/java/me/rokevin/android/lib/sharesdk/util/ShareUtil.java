@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.text.TextUtils;
+import android.widget.Toast;
 
 import com.sina.weibo.sdk.api.share.IWeiboHandler;
 import com.sina.weibo.sdk.api.share.IWeiboShareAPI;
@@ -27,6 +28,7 @@ import me.rokevin.android.lib.sharesdk.businees.wx.WXLogin;
 import me.rokevin.android.lib.sharesdk.businees.wx.WXShare;
 import me.rokevin.android.lib.sharesdk.businees.wx.WXTokenKeeper;
 import me.rokevin.android.lib.sharesdk.exception.AppKeyException;
+import me.rokevin.android.lib.sharesdk.listener.IShareQQ;
 
 /**
  * Created by luokaiwen on 16/10/31.
@@ -299,9 +301,21 @@ public class ShareUtil {
      * @param appName
      * @param appSource
      */
-    public static void shareToQQ(Activity activity, String title, String summary, String audioUrl, String imageUrl, String targetUrl, String appName, String appSource) {
+    public static void shareToQQ(Activity activity, String title, String summary, String audioUrl, String imageUrl, String targetUrl, String appName, String appSource, IShareQQ iShareQQ) {
 
-        mQQShare.shareToQQ(activity, title, summary, audioUrl, imageUrl, targetUrl, appName, appSource);
+        mQQShare.shareToQQ(activity, title, summary, audioUrl, imageUrl, targetUrl, appName, appSource, iShareQQ);
+    }
+
+    /**
+     * 分享到QQ空间 http://wiki.open.qq.com/index.php?title=Android_API%E8%B0%83%E7%94%A8%E8%AF%B4%E6%98%8E&=45038#1.14_.E5.88.86.E4.BA.AB.E5.88.B0QQ.E7.A9.BA.E9.97.B4.EF.BC.88.E6.97.A0.E9.9C.80QQ.E7.99.BB.E5.BD.95.EF.BC.89
+     *
+     * @param activity
+     * @param title
+     * @param url
+     */
+    public static void shareToQQZoneTextImage(Activity activity, String title, String url, IShareQQ iShareQQ) {
+
+        mQQShare.shareToQQZone(activity, title, url, iShareQQ);
     }
 
     /**
@@ -356,16 +370,17 @@ public class ShareUtil {
             @Override
             public void onComplete(Object o) {
 
+                Toast.makeText(mContext, R.string.share_qqzone_succ, Toast.LENGTH_SHORT);
             }
 
             @Override
             public void onError(UiError uiError) {
-
+                Toast.makeText(mContext, uiError.errorMessage + ":" + uiError.errorDetail, Toast.LENGTH_SHORT);
             }
 
             @Override
             public void onCancel() {
-
+                Toast.makeText(mContext, "取消", Toast.LENGTH_SHORT);
             }
         });
 

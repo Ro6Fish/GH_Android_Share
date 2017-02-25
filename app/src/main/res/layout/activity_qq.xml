@@ -9,7 +9,14 @@
         android:layout_width="match_parent"
         android:layout_height="48dp"
         android:gravity="center"
-        android:text="分享" />
+        android:text="分享到QQ" />
+
+    <Button
+        android:id="@+id/btn_share_qqzone"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:gravity="center"
+        android:text="分享到QQ空间" />
 
     <Button
         android:id="@+id/btn_login"

@@ -3,14 +3,14 @@ package me.rokevin.android.lib.sharesdk.businees.qq;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
-import android.widget.Toast;
 
+import com.tencent.connect.share.QzoneShare;
 import com.tencent.open.SocialConstants;
-import com.tencent.tauth.IUiListener;
 import com.tencent.tauth.Tencent;
-import com.tencent.tauth.UiError;
 
-import me.rokevin.android.lib.sharesdk.R;
+import java.util.ArrayList;
+
+import me.rokevin.android.lib.sharesdk.listener.IShareQQ;
 
 /**
  * Created by luokaiwen on 16/10/31.
@@ -27,7 +27,7 @@ public class QQShare {
     }
 
 
-    public void shareToQQ(Activity activity, String title, String summary, String audioUrl, String imageUrl, String targetUrl, String appName, String appSource) {
+    public void shareToQQ(Activity activity, String title, String summary, String audioUrl, String imageUrl, String targetUrl, String appName, String appSource, IShareQQ iShareQQ) {
 
         if (mTencent == null || activity == null) {
             return;
@@ -57,25 +57,43 @@ public class QQShare {
         //标识该消息的来源应用，值为应用名称+AppId。
         bundle.putString(SocialConstants.PARAM_APP_SOURCE, appSource);
 
-        mTencent.shareToQQ(activity, bundle, mUIListener);
+        mTencent.shareToQQ(activity, bundle, iShareQQ);
     }
 
-    private IUiListener mUIListener = new IUiListener() {
+    /**
+     * 分享到QQ空间
+     *
+     * @param activity 被分享的页面
+     * @param title    标题
+     * @param summary  内容
+     * @param url      链接
+     */
+    public void shareToQQZone(Activity activity, String title, String summary, String url, IShareQQ iShareQQ) {
 
-        @Override
-        public void onComplete(Object o) {
-
-            Toast.makeText(mContext, R.string.share_succ, Toast.LENGTH_SHORT);
+        if (mTencent == null || activity == null) {
+            return;
         }
 
-        @Override
-        public void onError(UiError uiError) {
+        ArrayList<String> imageUrls = new ArrayList<>();
 
-        }
+        Bundle bundle = new Bundle();
+        bundle.putInt(QzoneShare.SHARE_TO_QZONE_KEY_TYPE, QzoneShare.SHARE_TO_QZONE_TYPE_IMAGE_TEXT);
+        bundle.putString(QzoneShare.SHARE_TO_QQ_TITLE, title); // 必填
+        bundle.putString(QzoneShare.SHARE_TO_QQ_SUMMARY, title); // 选填
+        bundle.putString(QzoneShare.SHARE_TO_QQ_TARGET_URL, url);// 必填
+        bundle.putStringArrayList(QzoneShare.SHARE_TO_QQ_IMAGE_URL, imageUrls); // 选填
+        mTencent.shareToQzone(activity, bundle, iShareQQ);
+    }
 
-        @Override
-        public void onCancel() {
+    /**
+     * 分享到QQ空间
+     *
+     * @param activity 被分享的页面
+     * @param title    标题
+     * @param url      链接
+     */
+    public void shareToQQZone(Activity activity, String title, String url, IShareQQ iShareQQ) {
 
-        }
-    };
+        shareToQQZone(activity, title, "", url, iShareQQ);
+    }
 }
