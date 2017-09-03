@@ -28,12 +28,22 @@ public class WXShare {
 
     public void shareToWX(String title, String description, String musicUrl, int imageId) {
 
+        shareToWX(false, title, description, musicUrl, imageId);
+    }
+
+    public void shareToWX(boolean isLowBandUrl, String title, String description, String musicUrl, int imageId) {
+
         if (mIwxapi == null || mContext == null) {
             return;
         }
 
         WXMusicObject music = new WXMusicObject();
-        music.musicUrl = musicUrl;
+
+        if (isLowBandUrl) {
+            music.musicLowBandUrl = musicUrl;
+        } else {
+            music.musicUrl = musicUrl;
+        }
 
         WXMediaMessage msg = new WXMediaMessage();
         msg.mediaObject = music;
