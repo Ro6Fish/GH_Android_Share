@@ -80,6 +80,81 @@ public class WXLogin {
 
         mWXGetTokenListener = listener;
 
+        AsyncTask getAccessTokenTask = new AsyncTask() {
+
+            @Override
+            protected String doInBackground(Object[] params) {
+
+                String appId = (String) params[0];
+                String secret = (String) params[1];
+                String code = (String) params[2];
+
+                String urlstr = "https://api.weixin.qq.com/sns/oauth2/access_token?appid=" + appId + "&secret=" + secret + "&code=" + code + "&grant_type=authorization_code";
+
+                HttpURLConnection connection = null;
+
+                String line = "";
+                String totalLine = "";
+
+                try {
+                    URL url = new URL(urlstr);
+                    connection = ((HttpURLConnection) url.openConnection());
+                    InputStream inputStream = connection.getInputStream();
+                    BufferedReader br = new BufferedReader(new InputStreamReader(inputStream));
+
+                    while ((line = br.readLine()) != null) {
+
+                        totalLine += line;
+                    }
+
+                    LogUtil.e(TAG, "token totalLine:" + totalLine);
+
+                } catch (MalformedURLException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                } finally {
+                    if (connection != null) {
+                        connection.disconnect();
+                    }
+                }
+
+                WXAccessToken token = null;
+
+                try {
+
+                    JSONObject jsonObject = new JSONObject(totalLine);
+
+                    String accessToken = jsonObject.getString("access_token");
+                    String expiresIn = jsonObject.getString("expires_in");
+                    String newRefreshToken = jsonObject.getString("refresh_token");
+                    String openid = jsonObject.getString("openid");
+                    String scope = jsonObject.getString("scope");
+                    String unionid = jsonObject.getString("unionid");
+
+                    token = new WXAccessToken();
+
+                    token.setOpenid(openid);
+                    token.setAccessToken(accessToken);
+                    token.setExpiresIn(expiresIn);
+                    token.setRefreshToken(newRefreshToken);
+                    token.setScope(scope);
+                    token.setUnionid(unionid);
+
+                    WXTokenKeeper.writeAccessToken(mContext, token);
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+                if (mWXGetTokenListener != null) {
+                    mWXGetTokenListener.onToken(token);
+                }
+
+                return totalLine;
+            }
+        };
+
         getAccessTokenTask.execute(appId, secret, code);
     }
 
@@ -94,6 +169,78 @@ public class WXLogin {
 
         mWXGetTokenListener = listener;
 
+        AsyncTask refreshTokenTask = new AsyncTask() {
+
+            @Override
+            protected String doInBackground(Object[] params) {
+
+                String appId = (String) params[0];
+                String refreshToken = (String) params[1];
+
+                String urlstr = "https://api.weixin.qq.com/sns/oauth2/refresh_token?appid=" + appId + "&grant_type=refresh_token&refresh_token=" + refreshToken;
+
+                HttpURLConnection connection = null;
+
+                String line = "";
+                String totalLine = "";
+
+                try {
+                    URL url = new URL(urlstr);
+                    connection = ((HttpURLConnection) url.openConnection());
+                    InputStream inputStream = connection.getInputStream();
+                    BufferedReader br = new BufferedReader(new InputStreamReader(inputStream));
+
+                    while ((line = br.readLine()) != null) {
+
+                        totalLine += line;
+                    }
+
+                    LogUtil.e(TAG, "refresh token totalLine:" + totalLine);
+
+                } catch (MalformedURLException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                } finally {
+                    if (connection != null) {
+                        connection.disconnect();
+                    }
+                }
+
+                WXAccessToken token = null;
+
+                try {
+
+                    JSONObject jsonObject = new JSONObject(totalLine);
+
+                    String accessToken = jsonObject.getString("access_token");
+                    String expiresIn = jsonObject.getString("expires_in");
+                    String newRefreshToken = jsonObject.getString("refresh_token");
+                    String openid = jsonObject.getString("openid");
+                    String scope = jsonObject.getString("scope");
+                    String unionid = jsonObject.getString("unionid");
+
+                    token = new WXAccessToken();
+
+                    token.setOpenid(accessToken);
+                    token.setExpiresIn(expiresIn);
+                    token.setRefreshToken(newRefreshToken);
+                    token.setOpenid(openid);
+                    token.setScope(scope);
+                    token.setUnionid(unionid);
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+                if (mWXGetTokenListener != null) {
+                    mWXGetTokenListener.onToken(token);
+                }
+
+                return totalLine;
+            }
+        };
+
         refreshTokenTask.execute(appId, refreshToken);
     }
 
@@ -107,240 +254,316 @@ public class WXLogin {
 
         mWXGetUserInfoListener = listener;
 
+        AsyncTask getUserInfoTask = new AsyncTask() {
+
+            @Override
+            protected String doInBackground(Object[] params) {
+
+                String token = (String) params[0];
+                String openId = (String) params[1];
+
+                String urlstr = "https://api.weixin.qq.com/sns/userinfo?access_token=" + token + "&openid=" + openId;
+
+                HttpURLConnection connection = null;
+
+                String line = "";
+                String totalLine = "";
+
+                try {
+                    URL url = new URL(urlstr);
+                    connection = ((HttpURLConnection) url.openConnection());
+                    InputStream inputStream = connection.getInputStream();
+                    BufferedReader br = new BufferedReader(new InputStreamReader(inputStream));
+
+                    while ((line = br.readLine()) != null) {
+
+                        totalLine += line;
+                    }
+
+                    LogUtil.e(TAG, "userInfo totalLine:" + totalLine);
+
+                } catch (MalformedURLException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                } finally {
+                    if (connection != null) {
+                        connection.disconnect();
+                    }
+                }
+
+                WXUserInfo user = null;
+
+                try {
+
+                    JSONObject jsonObject = new JSONObject(totalLine);
+
+                    String openid = jsonObject.getString("openid");
+                    String nickname = jsonObject.getString("nickname");
+                    String sex = jsonObject.getString("sex");
+                    String province = jsonObject.getString("province");
+                    String city = jsonObject.getString("city");
+                    String country = jsonObject.getString("country");
+                    String headimgurl = jsonObject.getString("headimgurl");
+                    String unionid = jsonObject.getString("unionid");
+
+                    user = new WXUserInfo();
+
+                    user.setOpenid(openid);
+                    user.setNickname(nickname);
+                    user.setSex(sex);
+                    user.setProvince(province);
+                    user.setCity(city);
+                    user.setCountry(country);
+                    user.setHeadimgurl(headimgurl);
+                    user.setUnionid(unionid);
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+                if (mWXGetUserInfoListener != null) {
+                    mWXGetUserInfoListener.onUserInfo(user);
+                }
+
+                return totalLine;
+            }
+        };
+
         getUserInfoTask.execute(token, openId);
     }
 
     /**
      * 请求token任务
      */
-    private AsyncTask getAccessTokenTask = new AsyncTask() {
-
-        @Override
-        protected String doInBackground(Object[] params) {
-
-            String appId = (String) params[0];
-            String secret = (String) params[1];
-            String code = (String) params[2];
-
-            String urlstr = "https://api.weixin.qq.com/sns/oauth2/access_token?appid=" + appId + "&secret=" + secret + "&code=" + code + "&grant_type=authorization_code";
-
-            HttpURLConnection connection = null;
-
-            String line = "";
-            String totalLine = "";
-
-            try {
-                URL url = new URL(urlstr);
-                connection = ((HttpURLConnection) url.openConnection());
-                InputStream inputStream = connection.getInputStream();
-                BufferedReader br = new BufferedReader(new InputStreamReader(inputStream));
-
-                while ((line = br.readLine()) != null) {
-
-                    totalLine += line;
-                }
-
-                LogUtil.e(TAG, "token totalLine:" + totalLine);
-
-            } catch (MalformedURLException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
-            } finally {
-                if (connection != null) {
-                    connection.disconnect();
-                }
-            }
-
-            WXAccessToken token = null;
-
-            try {
-
-                JSONObject jsonObject = new JSONObject(totalLine);
-
-                String accessToken = jsonObject.getString("access_token");
-                String expiresIn = jsonObject.getString("expires_in");
-                String newRefreshToken = jsonObject.getString("refresh_token");
-                String openid = jsonObject.getString("openid");
-                String scope = jsonObject.getString("scope");
-                String unionid = jsonObject.getString("unionid");
-
-                token = new WXAccessToken();
-
-                token.setOpenid(openid);
-                token.setAccessToken(accessToken);
-                token.setExpiresIn(expiresIn);
-                token.setRefreshToken(newRefreshToken);
-                token.setScope(scope);
-                token.setUnionid(unionid);
-
-                WXTokenKeeper.writeAccessToken(mContext, token);
-
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-
-            if (mWXGetTokenListener != null) {
-                mWXGetTokenListener.onToken(token);
-            }
-
-            return totalLine;
-        }
-    };
+//    private AsyncTask getAccessTokenTask = new AsyncTask() {
+//
+//        @Override
+//        protected String doInBackground(Object[] params) {
+//
+//            String appId = (String) params[0];
+//            String secret = (String) params[1];
+//            String code = (String) params[2];
+//
+//            String urlstr = "https://api.weixin.qq.com/sns/oauth2/access_token?appid=" + appId + "&secret=" + secret + "&code=" + code + "&grant_type=authorization_code";
+//
+//            HttpURLConnection connection = null;
+//
+//            String line = "";
+//            String totalLine = "";
+//
+//            try {
+//                URL url = new URL(urlstr);
+//                connection = ((HttpURLConnection) url.openConnection());
+//                InputStream inputStream = connection.getInputStream();
+//                BufferedReader br = new BufferedReader(new InputStreamReader(inputStream));
+//
+//                while ((line = br.readLine()) != null) {
+//
+//                    totalLine += line;
+//                }
+//
+//                LogUtil.e(TAG, "token totalLine:" + totalLine);
+//
+//            } catch (MalformedURLException e) {
+//                e.printStackTrace();
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//            } finally {
+//                if (connection != null) {
+//                    connection.disconnect();
+//                }
+//            }
+//
+//            WXAccessToken token = null;
+//
+//            try {
+//
+//                JSONObject jsonObject = new JSONObject(totalLine);
+//
+//                String accessToken = jsonObject.getString("access_token");
+//                String expiresIn = jsonObject.getString("expires_in");
+//                String newRefreshToken = jsonObject.getString("refresh_token");
+//                String openid = jsonObject.getString("openid");
+//                String scope = jsonObject.getString("scope");
+//                String unionid = jsonObject.getString("unionid");
+//
+//                token = new WXAccessToken();
+//
+//                token.setOpenid(openid);
+//                token.setAccessToken(accessToken);
+//                token.setExpiresIn(expiresIn);
+//                token.setRefreshToken(newRefreshToken);
+//                token.setScope(scope);
+//                token.setUnionid(unionid);
+//
+//                WXTokenKeeper.writeAccessToken(mContext, token);
+//
+//            } catch (JSONException e) {
+//                e.printStackTrace();
+//            }
+//
+//            if (mWXGetTokenListener != null) {
+//                mWXGetTokenListener.onToken(token);
+//            }
+//
+//            return totalLine;
+//        }
+//    };
 
     /**
      * 请求刷新token任务
      */
-    private AsyncTask refreshTokenTask = new AsyncTask() {
-
-        @Override
-        protected String doInBackground(Object[] params) {
-
-            String appId = (String) params[0];
-            String refreshToken = (String) params[1];
-
-            String urlstr = "https://api.weixin.qq.com/sns/oauth2/refresh_token?appid=" + appId + "&grant_type=refresh_token&refresh_token=" + refreshToken;
-
-            HttpURLConnection connection = null;
-
-            String line = "";
-            String totalLine = "";
-
-            try {
-                URL url = new URL(urlstr);
-                connection = ((HttpURLConnection) url.openConnection());
-                InputStream inputStream = connection.getInputStream();
-                BufferedReader br = new BufferedReader(new InputStreamReader(inputStream));
-
-                while ((line = br.readLine()) != null) {
-
-                    totalLine += line;
-                }
-
-                LogUtil.e(TAG, "refresh token totalLine:" + totalLine);
-
-            } catch (MalformedURLException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
-            } finally {
-                if (connection != null) {
-                    connection.disconnect();
-                }
-            }
-
-            WXAccessToken token = null;
-
-            try {
-
-                JSONObject jsonObject = new JSONObject(totalLine);
-
-                String accessToken = jsonObject.getString("access_token");
-                String expiresIn = jsonObject.getString("expires_in");
-                String newRefreshToken = jsonObject.getString("refresh_token");
-                String openid = jsonObject.getString("openid");
-                String scope = jsonObject.getString("scope");
-                String unionid = jsonObject.getString("unionid");
-
-                token = new WXAccessToken();
-
-                token.setOpenid(accessToken);
-                token.setExpiresIn(expiresIn);
-                token.setRefreshToken(newRefreshToken);
-                token.setOpenid(openid);
-                token.setScope(scope);
-                token.setUnionid(unionid);
-
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-
-            if (mWXGetTokenListener != null) {
-                mWXGetTokenListener.onToken(token);
-            }
-
-            return totalLine;
-        }
-    };
+//    private AsyncTask refreshTokenTask = new AsyncTask() {
+//
+//        @Override
+//        protected String doInBackground(Object[] params) {
+//
+//            String appId = (String) params[0];
+//            String refreshToken = (String) params[1];
+//
+//            String urlstr = "https://api.weixin.qq.com/sns/oauth2/refresh_token?appid=" + appId + "&grant_type=refresh_token&refresh_token=" + refreshToken;
+//
+//            HttpURLConnection connection = null;
+//
+//            String line = "";
+//            String totalLine = "";
+//
+//            try {
+//                URL url = new URL(urlstr);
+//                connection = ((HttpURLConnection) url.openConnection());
+//                InputStream inputStream = connection.getInputStream();
+//                BufferedReader br = new BufferedReader(new InputStreamReader(inputStream));
+//
+//                while ((line = br.readLine()) != null) {
+//
+//                    totalLine += line;
+//                }
+//
+//                LogUtil.e(TAG, "refresh token totalLine:" + totalLine);
+//
+//            } catch (MalformedURLException e) {
+//                e.printStackTrace();
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//            } finally {
+//                if (connection != null) {
+//                    connection.disconnect();
+//                }
+//            }
+//
+//            WXAccessToken token = null;
+//
+//            try {
+//
+//                JSONObject jsonObject = new JSONObject(totalLine);
+//
+//                String accessToken = jsonObject.getString("access_token");
+//                String expiresIn = jsonObject.getString("expires_in");
+//                String newRefreshToken = jsonObject.getString("refresh_token");
+//                String openid = jsonObject.getString("openid");
+//                String scope = jsonObject.getString("scope");
+//                String unionid = jsonObject.getString("unionid");
+//
+//                token = new WXAccessToken();
+//
+//                token.setOpenid(accessToken);
+//                token.setExpiresIn(expiresIn);
+//                token.setRefreshToken(newRefreshToken);
+//                token.setOpenid(openid);
+//                token.setScope(scope);
+//                token.setUnionid(unionid);
+//
+//            } catch (JSONException e) {
+//                e.printStackTrace();
+//            }
+//
+//            if (mWXGetTokenListener != null) {
+//                mWXGetTokenListener.onToken(token);
+//            }
+//
+//            return totalLine;
+//        }
+//    };
 
     /**
      * 请求用户信息任务
      */
-    private AsyncTask getUserInfoTask = new AsyncTask() {
-
-        @Override
-        protected String doInBackground(Object[] params) {
-
-            String token = (String) params[0];
-            String openId = (String) params[1];
-
-            String urlstr = "https://api.weixin.qq.com/sns/userinfo?access_token=" + token + "&openid=" + openId;
-
-            HttpURLConnection connection = null;
-
-            String line = "";
-            String totalLine = "";
-
-            try {
-                URL url = new URL(urlstr);
-                connection = ((HttpURLConnection) url.openConnection());
-                InputStream inputStream = connection.getInputStream();
-                BufferedReader br = new BufferedReader(new InputStreamReader(inputStream));
-
-                while ((line = br.readLine()) != null) {
-
-                    totalLine += line;
-                }
-
-                LogUtil.e(TAG, "userInfo totalLine:" + totalLine);
-
-            } catch (MalformedURLException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
-            } finally {
-                if (connection != null) {
-                    connection.disconnect();
-                }
-            }
-
-            WXUserInfo user = null;
-
-            try {
-
-                JSONObject jsonObject = new JSONObject(totalLine);
-
-                String openid = jsonObject.getString("openid");
-                String nickname = jsonObject.getString("nickname");
-                String sex = jsonObject.getString("sex");
-                String province = jsonObject.getString("province");
-                String city = jsonObject.getString("city");
-                String country = jsonObject.getString("country");
-                String headimgurl = jsonObject.getString("headimgurl");
-                String unionid = jsonObject.getString("unionid");
-
-                user = new WXUserInfo();
-
-                user.setOpenid(openid);
-                user.setNickname(nickname);
-                user.setSex(sex);
-                user.setProvince(province);
-                user.setCity(city);
-                user.setCountry(country);
-                user.setHeadimgurl(headimgurl);
-                user.setUnionid(unionid);
-
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-
-            if (mWXGetUserInfoListener != null) {
-                mWXGetUserInfoListener.onUserInfo(user);
-            }
-
-            return totalLine;
-        }
-    };
+//    private AsyncTask getUserInfoTask = new AsyncTask() {
+//
+//        @Override
+//        protected String doInBackground(Object[] params) {
+//
+//            String token = (String) params[0];
+//            String openId = (String) params[1];
+//
+//            String urlstr = "https://api.weixin.qq.com/sns/userinfo?access_token=" + token + "&openid=" + openId;
+//
+//            HttpURLConnection connection = null;
+//
+//            String line = "";
+//            String totalLine = "";
+//
+//            try {
+//                URL url = new URL(urlstr);
+//                connection = ((HttpURLConnection) url.openConnection());
+//                InputStream inputStream = connection.getInputStream();
+//                BufferedReader br = new BufferedReader(new InputStreamReader(inputStream));
+//
+//                while ((line = br.readLine()) != null) {
+//
+//                    totalLine += line;
+//                }
+//
+//                LogUtil.e(TAG, "userInfo totalLine:" + totalLine);
+//
+//            } catch (MalformedURLException e) {
+//                e.printStackTrace();
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//            } finally {
+//                if (connection != null) {
+//                    connection.disconnect();
+//                }
+//            }
+//
+//            WXUserInfo user = null;
+//
+//            try {
+//
+//                JSONObject jsonObject = new JSONObject(totalLine);
+//
+//                String openid = jsonObject.getString("openid");
+//                String nickname = jsonObject.getString("nickname");
+//                String sex = jsonObject.getString("sex");
+//                String province = jsonObject.getString("province");
+//                String city = jsonObject.getString("city");
+//                String country = jsonObject.getString("country");
+//                String headimgurl = jsonObject.getString("headimgurl");
+//                String unionid = jsonObject.getString("unionid");
+//
+//                user = new WXUserInfo();
+//
+//                user.setOpenid(openid);
+//                user.setNickname(nickname);
+//                user.setSex(sex);
+//                user.setProvince(province);
+//                user.setCity(city);
+//                user.setCountry(country);
+//                user.setHeadimgurl(headimgurl);
+//                user.setUnionid(unionid);
+//
+//            } catch (JSONException e) {
+//                e.printStackTrace();
+//            }
+//
+//            if (mWXGetUserInfoListener != null) {
+//                mWXGetUserInfoListener.onUserInfo(user);
+//            }
+//
+//            return totalLine;
+//        }
+//    };
 
     private WXGetTokenListener mWXGetTokenListener;
 

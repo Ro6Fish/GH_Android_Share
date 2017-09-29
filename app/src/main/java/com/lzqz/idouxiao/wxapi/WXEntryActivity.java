@@ -1,11 +1,10 @@
-package com.bitch4.joke.wxapi;
+package com.lzqz.idouxiao.wxapi;
 
 
 import android.os.Bundle;
 
 import com.tencent.mm.sdk.openapi.BaseReq;
 import com.tencent.mm.sdk.openapi.BaseResp;
-import com.tencent.mm.sdk.openapi.ConstantsAPI;
 import com.tencent.mm.sdk.openapi.IWXAPI;
 import com.tencent.mm.sdk.openapi.IWXAPIEventHandler;
 import com.tencent.mm.sdk.openapi.WXAPIFactory;

@@ -61,7 +61,7 @@
 
         <!--微信 android:name="com.bitch4.joke.wxapi.WXEntryActivity" -->
         <activity
-            android:name="com.hlvan.ddd.consigner.wxapi.WXEntryActivity"
+            android:name="com.lzqz.idouxiao.wxapi.WXEntryActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:exported="true"
             android:screenOrientation="portrait"

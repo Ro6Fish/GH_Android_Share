@@ -5,10 +5,12 @@ package me.rokevin.share;
  */
 public class ShareConfig {
 
+
     /**
      * QQ OPEN_ID
      */
     public static String QQ_OPEN_ID = "1105515096";
+    // public static final String QQ_OPEN_ID = "1105547051"; // 发货端
 
     /**
      * 新浪 APP_KEY
@@ -18,6 +20,7 @@ public class ShareConfig {
     /**
      * 微信APP_ID
      */
-    public static String WX_APP_ID = "wxe1286bd87bfac0c1";
-    public static String WX_SECRET = "5e00fc5946c5b8635a4ec581029a65e2";
+    public static String WX_APP_ID = "wx265cf2fe8f1fc918";
+
+    public static final String WX_SECRET = "230b6f6f3bba64815f75456c80afac99";
 }

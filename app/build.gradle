@@ -2,40 +2,30 @@ apply plugin: 'com.android.application'
 
 android {
     signingConfigs {
+        lzqz {
+            keyAlias 'lzqz'
+            keyPassword 'Lzqz123'
+            storeFile file('/Users/luokaiwen/lezaiqizhong.jks')
+            storePassword 'Lzqz123'
+        }
     }
     compileSdkVersion 22
     buildToolsVersion "22.0.1"
     defaultConfig {
-        applicationId "me.rokevin.share"
+//        applicationId "me.rokevin.share"
+        applicationId "com.lzqz.idouxiao"
         minSdkVersion 14
         targetSdkVersion 22
         versionCode 1
         versionName "1.0"
     }
-
-    signingConfigs {
-//        joke {
-//            keyAlias 'dingdangdao'
-//            keyPassword 'hlvan123'
-//            storeFile file('/Users/luokaiwen/dingdangdao.jks')
-//            storePassword 'hlvan123'
-//        }
-        joke {
-            keyAlias 'joke'
-            keyPassword 'joke123'
-            storeFile file('/Users/luokaiwen/joke.jks')
-            storePassword 'joke123'
-        }
-    }
-
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-            signingConfig signingConfigs.joke
         }
         debug {
-            signingConfig signingConfigs.joke
+            signingConfig signingConfigs.lzqz
         }
     }
     lintOptions {
